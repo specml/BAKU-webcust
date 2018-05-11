@@ -1,0 +1,124 @@
+#inventoryInfo {
+  height: 40px;
+  display: block;
+  position: relative;
+}
+#inventoryInfo p {
+  text-align: left;
+  font-style: italic;
+  font-size: 31px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 20px;
+  opacity: 0.7;
+}
+#inventory_p p_p:hover {
+  cursor: pointer;
+  color:#fff;
+}
+#tableContainer div.white, #tableContainer div.grey {
+  display: table-cell;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+}
+.white {
+  width: 20%;
+}
+.grey {
+  width: 60%;
+  background: #efefef;
+	background: rgba(144,144,144,0.15);
+}
+.grey p {
+  text-align: left;
+}
+.scaned {
+  width: 20%;
+}
+.item {
+  width: 80%;
+}
+.total-text, .total-qty  {
+    position: absolute;
+    bottom: -70px;
+}
+.total-text {
+    right: 20%;
+}
+.total-qty {
+    right: 0;
+}
+.total-text p, .total-qty p {
+    font-size: 40px;
+}
+.total-text p {
+    text-align: right;
+}
+#notlogined, #nostvcnr {
+	margin-top: 240px;
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	display: block;
+}
+#notlogined p, #nostvcnr p {
+  line-height: 1;
+	font-size: 50px;
+	color: #d6d6d6;
+	color: rgba(51, 51, 51, 0.2);
+}
+#page {
+	display: none;
+    position: relative;
+}
+.popup a#close, .menu a#inventoryChngCancel {
+  width: 70px;
+  height: 70px;
+  display: block;
+  text-indent: -9999px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: url(../img/close.png) no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  opacity: 0.3;
+}
+.popup a#close:hover, .menu a#inventoryChngCancel:hover {
+  opacity: 0.5;
+}
+.menu a#inventoryChngCancel {
+  position: absolute;
+  top: auto;
+  right: auto;
+  margin-top: -5px;
+}
+#itemimg {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+}
+#itemimg img {
+    width: 100%;
+}
+#changeparam {
+    margin: 0;
+    position: relative;
+}
+#overlay {
+  width:100%;
+  height:100%;
+  position:fixed;
+  top:0;
+  left:0;
+  display:none;
+  background:#000;
+  opacity:.8;
+}

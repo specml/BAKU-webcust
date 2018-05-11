@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Сравнение инвентаризации</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <style type="text/css">
+      /*style.css*/
+      @import url('https://fonts.googleapis.com/css?family=PT+Serif');
+      * {
+        font-family: 'PT Serif', serif;
+        font-weight: 700;
+      }
+      body {
+        margin: 0;
+      }
+      p {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0;
+        padding: 0;
+      }
+      .menu {
+        display: block;
+        background: #9F9F9F;
+        overflow: hidden;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        text-shadow: 0 1px 1px black;
+        box-shadow: 5px 5px 5px #838383;
+        -moz-box-shadow: 5px 5px 5px #838383;
+        -webkit-box-shadow: 5px 5px 5px #838383;
+      }
+      .menu div {
+        margin: 0;
+        padding: 5px 10px 0 10px;
+      }
+      .menu input[type=text] {
+        width: 170px;
+        font-size: 40px
+      }
+      .menu input[type=button] {
+        margin: 20px 120px 0 0;
+        padding: 1px 6px;
+        background:#ccc;
+        border-width: 2px;
+        border-style: solid;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        font-weight: 700;
+        font-size: 33px;
+        cursor: pointer;
+        color:#000;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      .menu input[type=button]:hover {
+        color:#fff;
+      }
+      .menu input[type=image] {
+        float: right;
+        height: 50px;
+        width: 50px;
+        opacity: 0.5;
+        margin: 13px 13px 0px 0px;
+      }
+      .menu input[type=image]:hover {
+        opacity: 1;
+      }
+      #rightMenuDiv {
+        max-width: none;
+        min-width: 40px;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+      }
+      #leftMenuDiv {
+        max-width: none;
+      }
+      .ef p {
+        display: inline-block;
+        margin: 0;
+        color: #000;
+        font-size: 45px;
+        text-shadow: 0 1px 1px gray;
+        min-width: 375px;
+        text-align: left;
+      }
+      .ef p_p {
+        text-shadow: none;
+        text-align: left;
+        padding: 1px 6px;
+        background: #ccc;
+        border-color: buttonface;
+        border-width: 2px;
+        border-style: solid;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        font-weight: 700;
+        font-size: 33px;
+        cursor: pointer;
+        color:#000;
+        line-height: 52px;
+        min-width: 50px;
+        text-align: center;
+      }
+      div.ef {
+        min-width: 315px;
+      }
+      #error {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: none;
+        background: #BF3030;
+        background: rgba(191,48,48,1);
+        color: white;
+        opacity: 0.95;
+      }
+      #error p {
+        margin: 0 100px;
+        font-size: 70px;
+        text-align: center;
+        position: relative;
+        height: 40%;
+        top: 30%;
+      }
+      .popup {
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        display: none;
+        overflow: hidden;
+        background: #fff;
+        -moz-border-radius: 15px;
+        -webkit-border-radius: 15px;
+        border-radius: 15px;
+        z-index: 100;
+        behavior: url(PIE.htc);
+      }
+      .popup h2 {
+        margin: 30px 30px;
+        font-size: 60px;
+        font-weight: 700;
+        opacity: 0.6;
+      }
+      .reg_form {
+        margin-left:-400px;
+        width: 800px;
+      }
+      .reg_form form {
+        margin-top: 20px;
+        overflow: hidden;
+      }
+      .reg_form label {
+        margin: 15px 30px 0 30px;
+        width: 200px;
+        font-size: 45px;
+        display: inline-block;
+        vertical-align: top;
+      }
+      #param_form.reg_form {
+        padding-top: 20px;
+      }
+      #param_form.reg_form label {
+        width: 310px;
+      }
+      .reg_form input[type=text], .reg_form input[type=password], .reg_form input[type=date], .reg_form select {
+        margin: 25px 40px 0 0;
+        padding: 0 6px;
+        width: 400px;
+        height: 44px;
+        font-weight: 400;
+        font-size: 32px;
+        border: 2px solid #ccc;
+        box-sizing: border-box;
+      }
+      option {
+        font-size: 16px;
+      }
+      #param_form.reg_form input[type=text],
+      #param_form.reg_form input[type=password],
+      #param_form.reg_form input[type=date],
+      #param_form.reg_form select {
+        width: 320px;
+      }
+      .reg_form input, .reg_form select {
+        background-color: #ffffff;
+      }
+      .reg_form input[type=text] {
+        text-transform:uppercase;
+      }
+      .reg_form input[type=submit], .reg_form input[type=button] {
+        margin: 15px 30px 30px 0px;
+        padding:3px 10px;
+        float: right;
+        background: #ccc;
+        border-width: 2px;
+        border-style: solid;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        font-weight: 700;
+        font-size: 35px;
+        cursor: pointer;
+        color: #000;
+        display: inline-block;
+      }
+      .reg_form input[type=submit] {
+        margin-bottom: 0;
+      }
+      .reg_form input[type=submit]:hover {
+        color:#f0f0f0;
+      }
+      #overlay {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: none;
+        background: #000;
+        opacity: 0.8;
+      }
+
+      /*minvcomp.css*/
+      #notlogined, #noparam {
+        margin-top: 240px;
+        width:100%;
+        height:100%;
+        position:fixed;
+        top:0;
+        left:0;
+        display: block;
+      }
+      #notlogined p, #noparam p {
+        line-height: 1;
+        font-size: 50px;
+        color: #d6d6d6;
+        color: rgba(51, 51, 51, 0.2);
+      }
+      #page {
+        display: none;
+        position: relative;
+      }
+      .popup a.close {
+        width: 70px;
+        height: 70px;
+        display: block;
+        text-indent: -9999px;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: url(./img/close.png) no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        opacity: 0.3;
+      }
+      .popup a.close:hover {
+        opacity: 0.5;
+      }
+      #changeparam {
+        margin: 0;
+        position: relative;
+      }
+      .select2-container--default .select2-selection--single {
+        margin: 25px 40px 0 0;
+        padding: 5px 6px;
+        width: 320px;
+        height: 44px;
+        font-weight: 400;
+        font-size: 27px;
+        border: 2px solid #ccc;
+        border-radius: 0px;
+        box-sizing: border-box;
+      }
+      .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 26px;
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        width: 20px;
+        margin-top: 30px;
+      }
+      .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #000;
+        font-weight: 400;
+        font-size: 32px;
+      }
+      .select2-results__option {
+        font-size: 24px;
+      }
+      .select2-search__field {
+        font-size: 24px;
+      }
+      .select2-results, .select2-results__options, .select2-container--default .select2-results>.select2-results__options {
+        height: 600px;
+        max-height: none;
+      }
+      #tableContainer, .tableHeader {
+        width: 99%;
+        margin: 0 0.5%;
+        color: #2a2a2a;
+      }
+      #tableContainer p, .tableHeader  p {
+        font-size: 35px;
+        word-wrap: break-word;
+      }
+      .itemCointainer {
+        width: 60%;
+        border: #faebd7 4px solid;
+        box-sizing: border-box;
+        display: table-cell;
+      }
+      .itemCointainer .code {
+        width: 100%;
+        background-color: #ffc77c;
+      }
+      .itemCointainer .name {
+        width: 70%;
+        float: left;
+      }
+      .itemCointainer .otherInfo {
+        width: 30%;
+        float: right;
+      }
+      .datepriceContainer {
+        width: 20%;
+        border: #e9967a 4px solid;
+        box-sizing: border-box;
+        display: table-cell;
+      }
+      .datepriceContainer .date {
+        background-color: #ab593e;
+      }
+      .datepriceContainer .date p {
+        color: #ffffff;
+      }
+      .qtyContainer {
+        width: 20%;
+        border: #faebd7 4px solid;
+        box-sizing: border-box;
+        display: table-cell;
+        position: relative;
+      }
+      .qtyContainer .difference {
+        background-color: #ffc77c;
+        position: absolute;
+        bottom: 0;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+      }
+      .tableHeader {
+        background-color: #eaeaea;
+        display: table;
+      }
+      #tableContainer .itemCointainer .code {
+        background-color: #faebd7;
+      }
+      #tableContainer .qtyContainer .difference {
+        background-color: #faebd7;
+      }
+      #tableContainer .datepriceContainer .date {
+        background-color: #e9967a;
+      }
+      #tableContainer .datepriceContainer .date p {
+        color: #000000;
+      }
+      #tableContainer>div {
+        width: 100%;
+        display: table;
+        margin-bottom: 10px;
+      }
+      #tableContainer>div.odd {
+        background-color: #eaeaea;
+      }
+      #tableContainer .odd .itemCointainer .code {
+        background-color: #e4d8c8;
+      }
+      #tableContainer .odd .itemCointainer {
+        border-color: #e4d8c8;
+      }
+      #tableContainer .odd .qtyContainer .difference {
+        background-color: #e4d8c8;
+      }
+      #tableContainer .odd .qtyContainer {
+        border-color: #e4d8c8;
+      }
+
+      #tableContainer .odd .datepriceContainer .date {
+        background-color: #c79686;
+      }
+      #tableContainer .odd .datepriceContainer {
+        border-color: #c79686;
+      }
+      .grayDivider {
+        background-color: silver;
+        height: 10px;
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <div id="leftMenuDiv">
+        <div class="ef">
+          <div><input value="Изменить параметры" type="button" id="changeparam"></div>
+        </div>
+
+        <div id="inventoryInfo" style="display:none;"></div>
+      </div>
+      <div id="rightMenuDiv">
+        <input id="loginbtn" type="image" src="img/li.png" alt="Войти" title="Войти">
+      </div>
+    </div>
+    <div id="page">
+
+      <div class="tableHeader">
+        <div class="itemCointainer">
+          <div class="code">
+            <p>Код товара</p>
+          </div>
+          <div class="name">
+            <p>Наименование</p>
+          </div>
+          <div class="otherInfo">
+            <div><p>Модель</p></div>
+            <div><p>Цвет</p></div>
+            <div><p>Размер</p></div>
+          </div>
+        </div>
+
+        <div class="datepriceContainer">
+          <div class="date"><p>Дата</p></div>
+          <div><br><p>Цена</p></div>
+          <div><p>Стоимость</p></div>
+        </div>
+
+        <div class="qtyContainer">
+          <div><p>Склад</p></div>
+          <div><p>Факт.</p></div>
+          <div class="difference"><p>Разница</p></div>
+        </div>
+      </div>
+
+      <div class="grayDivider"></div>
+
+
+      <div id="tableContainer"></div>
+
+
+    </div>
+    <div class="popup reg_form" id="logindiv">
+      <a class="close" title="Закрыть" href="#">Закрыть</a>
+      <form id="loginForm" method="post">
+        <label for="login">Логин:</label>
+        <input type="text" name="login" />
+        <label for="passwd">Пароль:</label>
+        <input type="password" name="passwd" />
+        <div style="display:block;">
+          <label for="company">Компания:</label>
+          <select size="1" name="company" id="company">
+            <option disabled selected value="">Выберите компанию</option>
+          </select>
+        </div>
+        <input value="Войти" type="submit">
+      </form>
+      <h2></h2>
+    </div>
+    <div id="param_form" class="popup reg_form">
+      <a class="close" title="Закрыть" href="#">Закрыть</a>
+      <div style="display:block;">
+        <label for="group">Группа:</label>
+        <select size="1" name="group" id="group">
+          <option selected value="">Выберите группу</option>
+        </select>
+      </div>
+      <div style="display:block;">
+        <label for="classif">Классификация товара:</label>
+        <select size="1" name="classif" id="classif">
+          <option selected value="">Выберите классификацию</option>
+        </select>
+      </div>
+      <div style="display:block;">
+        <label for="loc">Склад:</label>
+        <select size="1" name="loc" id="loc">
+          <option selected value="">Выберите склад</option>
+        </select>
+      </div>
+      <div style="display:block;">
+        <label for="date">Дата:</label>
+        <input type="date" name="date" id="date">
+      </div>
+      <input value="Применить" type="button" id="applyParam">
+    </div>
+    <div id="overlay" style="display: none;"></div>
+    <div id="notlogined">
+      <p>Вы не авторизированы</p>
+    </div>
+    <div id="noparam">
+      <p>Параметры не указаны</p>
+    </div>
+    <div id="error"><p></p></div>
+
+  </body>
+  <script type="text/javascript" >
+
+    (function ($) {
+      var fnVal = $.fn.val;
+      $.fn.val = function (value) {
+        if (typeof value == 'undefined') {
+          var res = fnVal.call(this)
+          if (res == null)
+            res = "";
+          return res;
+        }
+        var result = fnVal.call(this, value);
+        $.fn.change.call(this);
+        return result;
+      };
+    })(jQuery);
+    function a_closeClick() {
+      $(this).parent().fadeOut(300);
+      $("#overlay").fadeOut(300);
+      document.getElementById("loginForm").reset();
+      return false;
+    }
+    function loginFormSubmit() {
+      if (!($("#company").val())) {
+        alert("Выберите компанию!");
+        return false;
+      }
+      var xhr = getXmlHttp();
+      xhr.open("POST", "../dologin", false);
+      xhr.setRequestHeader("Cache-Control", "max-age=0");
+      var aParams = new Array();
+      for (var i = 0; i < document.forms[0].elements.length; i++) {
+        var sParam = encodeURIComponent(document.forms[0].elements[i].name);
+        sParam += "=";
+        sParam += encodeURIComponent(document.forms[0].elements[i].value);
+        aParams.push(sParam);
+      }
+      xhr.send(aParams.join("&") + "&name=" + encodeURIComponent("Log In"));
+      if (xhr.responseText != "") {
+        var tstr = "?comp=" + $("#company").val();
+        if ($("#group").val())
+          tstr = tstr + encodeURI("&group=" + $("#group").val());
+        if ($("#classif").val())
+          tstr = tstr + encodeURI("&classif=" + $("#classif").val());
+        if ($("#loc").val())
+          tstr = tstr + encodeURI("&loc=" + $("#loc").val());
+        var date = $("#date").val();
+        if (date) {
+          date = date.split('-');
+          date = date[2] + '/' + date[1] + '/' + date[0];
+          tstr = tstr + encodeURI("&date=" + date);
+        }
+        location.search = tstr;
+      } else {
+        showLogin(false);
+      }
+      return false;
+    }
+    function getParameterByName(name, url) {
+      if (!url)
+        url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+              results = regex.exec(url);
+      if (!results)
+        return null;
+      if (!results[2])
+        return "";
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    function getXmlHttp() {
+      var r;
+      try {
+        r = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+        try {
+          r = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (E) {
+          r = false;
+        }
+      }
+      if (!r && typeof XMLHttpRequest != "undefined") {
+        r = new XMLHttpRequest();
+      }
+      return r;
+    }
+    $("a.close").click(function () {
+      $(this).parent().fadeOut(300);
+      $("#overlay").fadeOut(300);
+      return false;
+    });
+    $("a.closeSet").click(function () {
+      $(this).parent().fadeOut(300);
+      $("#overlaySet").fadeOut(300);
+      return false;
+    });
+    function showLogin(f) {
+      document.getElementById("noparam").style.display = "none";
+      document.getElementById("page").style.display = "none";
+      document.getElementById("notlogined").style.display = "block";
+      document.getElementById("loginForm").reset();
+      var xhr = getXmlHttp();
+      xhr.open("POST", "../WebDoLogout.hal", false);
+      xhr.send();
+      $("h2").text((f === false) ? "Неправильный логин или пароль!" : "");
+      $("div#logindiv").fadeIn(300);
+      $("#overlay").show().css({"filter": "alpha(opacity=80)"});
+    }
+    function showParam() {
+      if (!($("#date").val()))
+        $("#date").val((new Date()).toISOString().slice(0, 10));
+      $("div#param_form").fadeIn(300);
+      $("#overlay").show().css({"filter": "alpha(opacity=80)"});
+    }
+    function csvToArray(strData, strDelimiter) {
+      strDelimiter = (strDelimiter || ",");
+      var objPattern = new RegExp(
+              (
+                      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+                      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+                      "([^\"\\" + strDelimiter + "\\r\\n]*))"
+                      ),
+              "gi"
+              );
+      var arrData = [[]];
+      var arrMatches = null;
+      while (arrMatches = objPattern.exec(strData)) {
+        var strMatchedDelimiter = arrMatches[1];
+        if (strMatchedDelimiter.length && strMatchedDelimiter !== strDelimiter)
+          arrData.push([]);
+        var strMatchedValue;
+        if (arrMatches[2])
+          strMatchedValue = arrMatches[2].replace(new RegExp("\"\"", "g"), "\"");
+        else
+          strMatchedValue = arrMatches[3];
+        arrData[arrData.length - 1].push(strMatchedValue);
+      }
+      return(arrData);
+    }
+    function loadCompanies(f) {
+      var request = getXmlHttp();
+      request.open("GET", "../WebLoadCompanies.hal?" + ((f) ? "all=true" : ""), false);
+      request.send(null);
+      if (request.status == 200) {
+        var aData = csvToArray(request.responseText);
+        var mySelect = document.getElementById("company");
+        aData.forEach(function (arr) {
+          var opt = document.createElement("option");
+          opt.setAttribute("value", arr[0]);
+          if (getParameterByName("comp") == arr[0])
+            document.title = '(' + arr[1] + ') ' + document.title;
+          opt.innerHTML = arr[1];
+          mySelect.appendChild(opt);
+        });
+        if (getParameterByName("comp"))
+          mySelect.value = getParameterByName("comp");
+      }
+    }
+    function loadGroups() {
+      var request = getXmlHttp();
+      request.open("GET", "../WebLoadGroups.hal?comp=" + getParameterByName("comp"), false);
+      request.send(null);
+      if (request.status == 200) {
+        var aData = csvToArray(request.responseText);
+        var mySelect = document.getElementById("group");
+        aData.forEach(function (arr) {
+          var opt = document.createElement("option");
+          opt.setAttribute("value", arr[0]);
+          opt.innerHTML = arr[0];
+          mySelect.appendChild(opt);
+        });
+        if (getParameterByName("group"))
+          mySelect.value = getParameterByName("group");
+      }
+    }
+    function loadClassifs() {
+      var request = getXmlHttp();
+      request.open("GET", "../WebLoadClassifs.hal?comp=" + getParameterByName("comp"), false);
+      request.send(null);
+      if (request.status == 200) {
+        var aData = csvToArray(request.responseText);
+        var mySelect = document.getElementById("classif");
+        aData.forEach(function (arr) {
+          var opt = document.createElement("option");
+          opt.setAttribute("value", arr[0]);
+          opt.innerHTML = arr[0] ? arr[0] : "";
+          mySelect.appendChild(opt);
+        });
+        if (getParameterByName("classif"))
+          mySelect.value = getParameterByName("classif");
+      }
+    }
+    function loadLocations() {
+      var request = getXmlHttp();
+      request.open("GET", "../WebLoadLocations.hal?comp=" + getParameterByName("comp"), false);
+      request.send(null);
+      if (request.status == 200) {
+        var aData = csvToArray(request.responseText);
+        var mySelect = document.getElementById("loc");
+        aData.forEach(function (arr) {
+          var opt = document.createElement("option");
+          opt.setAttribute("value", arr[0]);
+          opt.innerHTML = arr[0];
+          mySelect.appendChild(opt);
+        });
+        if (getParameterByName("loc"))
+          mySelect.value = getParameterByName("loc");
+      }
+    }
+    function paramSubmit() {
+      var tstr = "?comp=" + $("#company").val();
+      if ($("#group").val())
+        tstr = tstr + encodeURI("&group=" + $("#group").val());
+      if ($("#classif").val())
+        tstr = tstr + encodeURI("&classif=" + $("#classif").val());
+      if ($("#loc").val())
+        tstr = tstr + encodeURI("&loc=" + $("#loc").val());
+      var date = $("#date").val();
+      if (date) {
+        date = date.split('-');
+        date = date[2] + '/' + date[1] + '/' + date[0];
+        tstr = tstr + encodeURI("&date=" + date);
+      }
+      location.search = tstr;
+    }
+    function drawReport() {
+      var comp = getParameterByName("comp");
+      var group = getParameterByName("group");
+      var classif = getParameterByName("classif");
+      var loc = getParameterByName("loc");
+      var date = getParameterByName("date");
+      document.getElementById("notlogined").style.display = "none";
+      if (date) {
+        document.getElementById("noparam").style.display = "none";
+        document.getElementById("page").style.display = "block";
+        var request = getXmlHttp();
+        var url = "../WebSTCompRn.hal?&comp=" + $("#company").val();
+        if ($("#group").val())
+          url = url + encodeURI("&group=" + $("#group").val());
+        if ($("#classif").val())
+          url = url + encodeURI("&classif=" + $("#classif").val());
+        if ($("#loc").val())
+          url = url + encodeURI("&loc=" + $("#loc").val());
+        var date = $("#date").val()
+        if (date) {
+          date = date.split('-');
+          date = date[2] + '/' + date[1] + '/' + date[0];
+          url = url + encodeURI("&date=" + date);
+        }
+        request.open("GET", url, false);
+        request.send(null);
+        if (request.status == 200 && request.responseText != "") {
+          var arr = request.responseText.split(';;;\r\n');
+          var totarr = arr[arr.length - 2].split(';;;');
+          arr.splice(arr.length - 2);
+          var tableContainer = document.getElementById("tableContainer");
+          tableContainer.innerHTML = "";
+          var counter = 0;
+          arr.forEach(function (a) {
+            a = a.split(";;;");
+            var row = document.createElement("div");
+            counter++;
+            if ((counter % 2) == 0)
+              row.setAttribute("class", "odd");
+            row.innerHTML += "<div class=\"itemCointainer\"><div class=\"code\"><p>"
+                    + a[0] + "</p></div><div class=\"name\"><p>"
+                    + a[2] + "</p></div><div class=\"otherInfo\"><div><p>"
+                    + a[1] + "</p></div><div><p>"
+                    + a[3] + "</p></div><div><p>"
+                    + a[4] + "</p></div></div></div><div class=\"datepriceContainer\"><div class=\"date\"><p>"
+                    + a[5] + "</p></div><div><br><p>"
+                    + a[6] + "</p></div><div><p>"
+                    + a[7] + "</p></div></div><div class=\"qtyContainer\"><div><p>"
+                    + a[8] + "</p></div><div><p>"
+                    + a[9] + "</p></div><div class=\"difference\"><p>"
+                    + a[10] + "</p></div></div>";
+            tableContainer.appendChild(row);
+          });
+        }
+      } else {
+        document.getElementById("noparam").style.display = "block";
+        document.getElementById("page").style.display = "none";
+
+      }
+    }
+
+    document.getElementById("changeparam").onclick = showParam;
+    document.getElementById("loginbtn").onclick = showLogin;
+    document.getElementById("loginForm").onsubmit = loginFormSubmit;
+    document.getElementById("applyParam").onclick = paramSubmit;
+    $(".close").click(a_closeClick);
+    loadCompanies(true);
+    loadGroups();
+    loadClassifs();
+    $('#classif').select2();
+    loadLocations();
+    if (getParameterByName("date")) {
+      var date = getParameterByName("date");
+      date = date.split('/');
+      date = date[2] + '-' + date[1] + '-' + date[0];
+      $("#date").val(date);
+    }
+    var requestli = getXmlHttp();
+    requestli.open("GET", "../WebMyLogIn.hal?comp=" + $("#company").val(), false);
+    requestli.send(null);
+    if (requestli.status == 200 && requestli.responseText != "") {
+      if (!($("#company").val()))
+        $("#company").val(requestli.responseText.split(",")[1]);
+      drawReport();
+    } else {
+      showLogin(true);
+    }
+  </script>
+
+</html>

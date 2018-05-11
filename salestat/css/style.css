@@ -1,0 +1,30 @@
+@import 'https://fonts.googleapis.com/css?family=Merriweather';
+.dc-chart  {
+	display: inline-table;
+}
+
+p {
+	text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+body {
+	font-family: 'Merriweather', serif;
+}
+
+div.notlogined {
+	margin-top: 175px;
+}
+div.notlogined p {
+	line-height: 1;
+	font-size: 50px;
+	color: #d6d6d6;
+	color: rgba(51, 51, 51, 0.2);
+}
+
+#chart-ring-brand,#chart-row-type {
+	height: 600px;
+	width: 600px;
+	display: inline-table;
+}

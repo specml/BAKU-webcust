@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Статистика продаж</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/dc.css"/>
+    <link rel="stylesheet" type="text/css" href="css/popup.css" id="popupStyle"/>
+    <link rel="stylesheet" type="text/css" href="css/menu.css" id="menuStyle"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css" id="styleStyle"/>
+</head>
+<body>
+  <div id="menu" class="default">
+    <ul>
+      <li id="logo">
+        <a href="http://bpi.in.ua">
+          <img alt="BPI Ukraine - системы автоматизации бизнеса" title="BPI Ukraine — компания работающая на рынке разработки и внедрения систем автоматизации бизнеса.">
+        </a>
+      </li>
+      <li id="title">
+        <div>Отчет "Статистика продаж"</div>
+      </li>
+      <li id="settings">
+        <div>Период: -<br>Склад (магазин): -</div>
+      </li>
+      <li id="changeparam">
+        <div>
+          <input value="Изменить параметры" type="button">
+        </div>
+      </li>
+      <li id="loginmenu">
+        <div>
+          <input value="Войти" type="button">
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div id="chart-ring-brand">
+      <p>По брендам</p>
+      <div id="notloginedB" class="notlogined">
+        <p>Вы не авторизированы</p>
+      </div>
+    </div>
+    <div id="chart-row-type">
+      <p>По группам</p>
+      <div id="notloginedT" class="notlogined">
+        <p>Вы не авторизированы</p>
+      </div>
+    </div>
+  </div>
+  <div id="reg_form" class="popup reg_form">
+    <a class="close" href="#">Закрыть</a>
+    <h2 id="h2log">Авторизация</h2>
+    <form id="loginForm" method="post">
+      <label for="login">Логин:</label>
+      <input type="text" name="login" />
+      <label for="passwd">Пароль:</label>
+      <input type="password" name="passwd" />
+      <div style="display:block;">
+        <label for="company">Компания:</label>
+        <select style="width:150px;" size="1" name="company" id="company">
+          <option disabled selected>Выберите компанию</option>
+        </select>
+      </div>
+      <input value="Войти" type="submit">
+    </form>
+  </div>
+  <div id="param_form" class="popup reg_form">
+    <a class="closeSet" href="#">Close</a>
+    <h2>Параметры</h2>
+    <div style="display:block;">
+      <label for="period">Период:</label>
+      <select style="width:150px;" size="1" name="period" id="period">
+        <option disabled selected>Выберите период</option>
+      </select>
+    </div>
+    <div style="display:block;">
+      <label for="loc">Склад (магазин):</label>
+      <select style="width:150px;" size="1" name="loc" id="loc">
+        <option disabled selected>Выберите склад</option>
+      </select>
+    </div>
+    <div style="display:block;" id="cat_block">
+      <label for="cat">Подкатегория:</label>
+      <select style="width:150px;" size="1" name="cat" id="cat">
+        <option>Выберите подкатегорию</option>
+        <option value="Accessories">Accessories</option>
+        <option value="Jewellery">Jewellery</option>
+      </select>
+    </div>
+    <input value="Применить" type="button" id="applyParamBtn">
+  </div>
+  <div id="overlay" style="display: none;"></div>
+  <div id="overlaySet" style="display: none;"></div>
+</body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="js/d3.js"></script>
+<script type="text/javascript" src="js/crossfilter.js"></script>
+<script type="text/javascript" src="js/dc.js"></script>
+<script type="text/javascript">
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    function getXmlHttp(){
+      var r;
+      try {
+        r = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+        try {
+          r = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (E) {
+          r = false;
+        }
+      }
+      if (!r && typeof XMLHttpRequest!="undefined") {
+        r = new XMLHttpRequest();
+      }
+      return r;
+    }
+    function remove_empty_bins(source_group) {
+        return {
+            all:function () {
+                return source_group.all().filter(function(d) {
+                    return d.value != 0;
+                });
+            }
+        };
+    }
+    function drawGraph(hansData) {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("reg_form").style.display = "none";
+      document.getElementById("overlaySet").style.display = "none";
+      document.getElementById("param_form").style.display = "none";
+      document.getElementById("notloginedB").style.display = "none";
+      document.getElementById("notloginedT").style.display = "none";
+      var setstr = "Период: " + sd +" - " + ed + "<br>Склад (магазин): " + loc;
+      if ((category) && (category!="")) {
+        setstr = setstr + "<br>Тип: " + category;
+      }
+      document.getElementById("settings").childNodes[1].innerHTML = setstr;
+      var brandRingChart = dc.pieChart("#chart-ring-brand"),
+          typeRowChart = dc.rowChart("#chart-row-type");
+      var iSum = 0;
+      if (hansData!="") {
+        param = hansData;
+      }
+
+      d3.csv("../WebSales.hal?param=" + param + "&sd=" + sd + "&ed=" + ed + "&loc=" + loc + "&cat=" + category + "&comp=" + comp, function(error, data) {
+        data.forEach(function(row){
+          row.Sum = row.Sum.match(/\d+/).input;
+          iSum+=parseInt(row.Sum);
+        });
+
+        var ndx = crossfilter(data),
+            all = ndx.groupAll().reduceSum(),
+            typeDim  = ndx.dimension(function(row) {return row.Type;}),
+            sumDim = ndx.dimension(function(row) {return row.Sum;}),
+            brandDim  = ndx.dimension(function(row) {return row.Brand;}),
+            sumPerType = typeDim.group().reduceSum(function(row) {return +row.Sum;}),
+            sumPerBrand = brandDim.group().reduceSum(function(row) {return +row.Sum;}),
+            sumHist    = sumDim.group().reduceCount(),
+            nonEmptyHist = remove_empty_bins(sumHist)
+            runDimension  = ndx.dimension(function(d) {return "run-"+d.Run;})
+            speedSumGroup = runDimension.group().reduceSum(function(d) {return d.Speed * d.Run;});
+
+        brandRingChart
+          .width(600)
+          .height(600)
+          .title(function (d) {
+              return brandRingChart.cappedKeyAccessor(d) + ": " + Math.round((brandRingChart.cappedValueAccessor(d))*100)/100;
+          })
+          .minAngleForLabel(360)
+          .slicesCap(100)
+          .externalRadiusPadding(110)
+          .innerRadius(40)
+          .radius(230)
+          .dimension(brandDim)
+          .ordering(dc.pluck("value"))
+          .group(sumPerBrand)
+          .on("pretransition", function(chart) {
+            chart.selectAll("text.pie-slice").text(function(d,i) {
+              if ((d.endAngle - d.startAngle) < 0.001) {
+                return "";
+              } else {
+                return i+1;
+              }
+            })
+          })
+          .legend(
+            dc.legend()
+            .x(20)
+            .y(10)
+            .itemHeight(13)
+            .gap(5)
+            .legendText(function(d, i) {
+              var arr = brandRingChart.selectAll("text.pie-slice")[0];
+              var proc;
+              for (var ii = 0; ii < arr.length; ii++) {
+                if (arr[ii].__data__.value==d.data) {
+                  proc = Math.round((arr[ii].__data__.endAngle - arr[ii].__data__.startAngle)/(2*Math.PI)*10000)/100;
+                  ii = arr.length;
+                }
+              }
+              return (i + 1) + ". " + d.name + " " + proc + "%";
+            })
+          );
+
+        typeRowChart
+          .width(600)
+          .height(600)
+          .dimension(typeDim)
+          .group(sumPerType)
+          .ordering(dc.pluck("value"))
+          .renderTitleLabel(true)
+          .elasticX(true)
+          .title(function (d) {
+            return Math.round((typeRowChart.cappedValueAccessor(d))*100)/100;
+          });
+
+        dc.renderAll();
+      });
+    }
+    $("a.close").click(function () {
+    	$(this).parent().fadeOut(300);
+    	$("#overlay").fadeOut(300);
+    	return false;
+    });
+    $("a.closeSet").click(function () {
+    	$(this).parent().fadeOut(300);
+    	$("#overlaySet").fadeOut(300);
+    	return false;
+    });
+    document.getElementById("loginForm").onsubmit = function () {
+      var xhr = getXmlHttp();
+      xhr.open("POST", "../dologin", false);
+      xhr.setRequestHeader("Cache-Control", "max-age=0");
+      var aParams = new Array();
+      for (var i = 0; i < document.forms[0].elements.length-1; i++) {
+          var sParam = encodeURIComponent(document.forms[0].elements[i].name);
+          sParam += "=";
+          sParam += encodeURIComponent(document.forms[0].elements[i].value);
+          aParams.push(sParam);
+      }
+      xhr.send(aParams.join("&") + "&name=" + encodeURIComponent("Log In"));
+
+    	if (xhr.responseText!="") {
+        if (comp!=$("#company").val()) {comp = $("#company").val();}
+        window.location.search = "param=" + xhr.responseText + "&sd=" + sd + "&ed=" + ed + "&loc=" + loc + "&comp=" + comp;
+      } else {
+        showLogin(false);
+      }
+      return false;
+    }
+    function showLogin(f) {
+      if (f===false) {
+        $("h2#h2log").text("Не правильный логин или пароль!");
+      }
+      $("div#reg_form").fadeIn(300);
+      $("#overlay").show().css({"filter" : "alpha(opacity=80)"});
+    }
+    function showParam() {
+      $("div#param_form").fadeIn(300);
+      $("#overlaySet").show().css({"filter" : "alpha(opacity=80)"});
+    }
+    function csvToArray(strData, strDelimiter){
+      strDelimiter = (strDelimiter || ",");
+      var objPattern = new RegExp(
+    		(
+          "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+          "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+          "([^\"\\" + strDelimiter + "\\r\\n]*))"
+        ),
+        "gi"
+    	);
+      var arrData = [[]];
+      var arrMatches = null;
+      while (arrMatches = objPattern.exec(strData)){
+        var strMatchedDelimiter = arrMatches[1];
+        if (strMatchedDelimiter.length && strMatchedDelimiter !== strDelimiter){
+          arrData.push([]);
+    		}
+        var strMatchedValue;
+        if (arrMatches[2]){
+          strMatchedValue = arrMatches[2].replace(new RegExp("\"\"", "g"),"\"");
+        } else {
+          strMatchedValue = arrMatches[3];
+        }
+    		arrData[arrData.length - 1].push(strMatchedValue);
+    	}
+      return(arrData);
+    }
+    function loadCompanies() {
+      $("#logo a img").attr("src","logos/" + (comp +".png"));
+      var request = getXmlHttp();
+    	request.open("GET", "../WebLoadCompanies.hal", false);
+    	request.send(null);
+    	if (request.status == 200) {
+        var aData = csvToArray(request.responseText);
+        var mySelect = document.getElementById("company");
+        aData.forEach(function(arr){
+          var opt = document.createElement("option");
+          opt.setAttribute("value",arr[0]);
+          opt.innerHTML = arr[1];
+          mySelect.appendChild(opt);
+        });
+        mySelect.value = comp;
+        if (comp=="16") {
+          document.getElementById("cat_block").style.display = "none";
+        } else {
+          document.getElementById("cat_block").style.display = "block";
+        }
+      }
+    }
+    function loadPeriods() {
+      var request = getXmlHttp();
+    	request.open("GET", "../WebLoadPeriods.hal?comp=" + comp, false);
+    	request.send(null);
+    	if (request.status == 200) {
+        var aData = csvToArray(request.responseText);
+        var mySelect = document.getElementById("period");
+        aData.forEach(function(arr){
+          var opt = document.createElement("option");
+          opt.setAttribute("value",arr[0]);
+          opt.innerHTML = arr[0];
+          mySelect.appendChild(opt);
+        });
+        mySelect.value = sd + ":" + ed;
+      }
+    }
+    function loadLocations() {
+      var request = getXmlHttp();
+    	request.open("GET", "../WebLoadLocations.hal?comp=" + comp, false);
+    	request.send(null);
+    	if (request.status == 200) {
+        var aData = csvToArray(request.responseText);
+        var mySelect = document.getElementById("loc");
+        aData.forEach(function(arr){
+          var opt = document.createElement("option");
+          opt.setAttribute("value",arr[0]);
+          opt.innerHTML = arr[0];
+          mySelect.appendChild(opt);
+        });
+        mySelect.value = loc;
+      }
+    }
+    document.getElementById("changeparam").childNodes[1].onclick = showParam;
+    document.getElementById("loginmenu").childNodes[1].onclick = showLogin;
+    $(document).ready(function(){
+        $(window).scroll(function() {
+            var top = $(document).scrollTop();
+            if (top == 0) {
+              $("#menu").css({top: "0", position: "relative"});
+              document.body.style.paddingTop = "0px";
+            }
+            else {
+              $("#menu").css({top: "0px", position: "fixed", width: "100%"});
+              document.body.style.paddingTop = "70px";
+            }
+        });
+    });
+    document.getElementById("applyParamBtn").onclick = function () {
+      sd = $("#period").val().split(":")[0];
+      ed = $("#period").val().split(":")[1];
+      loc = $("#loc").val();
+      category = $("#cat").val();
+      if (category=="Выберите подкатегорию") {
+        category = "";
+      }
+      //history.pushState({ SaleStat: "SaleStat" }, "SaleStat", "SaleStat.html?param=" + param + "&sd=" + sd + "&ed=" + ed + "&cat=" + category + "&loc=" + loc + "&comp=" + comp);
+      location.search = "?param=" + param + "&sd=" + sd + "&ed=" + ed + "&cat=" + category + "&loc=" + loc + "&comp=" + comp;
+      $("a.close").click();
+      request.open("GET", "../WebMyLogIn.hal?param=" + param, false);
+      request.send(null);
+      if (request.status == 200 && request.responseText != "") {
+        drawGraph(request.responseText);
+      } else {
+        document.getElementById("overlaySet").style.display = "none";
+        document.getElementById("param_form").style.display = "none";
+        showLogin();
+      }
+
+    }
+    var param = getParameterByName("param");
+    var sd = getParameterByName("sd");
+    var ed = getParameterByName("ed");
+    var loc = getParameterByName("loc");
+    var category = getParameterByName("cat");
+    var comp = getParameterByName("comp");
+    var request = getXmlHttp();
+    var d = Date.now();
+    location.folder = location.pathname.slice(0,location.pathname.lastIndexOf('/'));
+    location.page = location.pathname.slice(location.pathname.lastIndexOf('/'));
+    document.getElementById("popupStyle").href = "css/popup.css?" + d;
+    document.getElementById("menuStyle").href = "css/menu.css?" + d;
+    document.getElementById("styleStyle").href = "css/style.css?" + d;
+    loadCompanies();
+    loadPeriods();
+    loadLocations();
+    request.open("GET", "../WebMyLogIn.hal?param=" + param, false);
+    request.send(null);
+    if (request.status == 200 && request.responseText != "") {
+      drawGraph(request.responseText);
+    } else {
+      showLogin();
+    }
+</script>
+</html>

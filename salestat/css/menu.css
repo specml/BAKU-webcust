@@ -1,0 +1,100 @@
+#menu {
+  position: relative;
+  text-align: center;
+  background: #9F9F9F;
+  height: 85px;
+  text-shadow:0 1px 1px black;
+  -moz-border-radius: 5px;
+  -webkit-border-radius:5px;
+  border-radius:5px;
+}
+#menu ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+#menu li {
+  display: inline;
+  float: left;
+  list-style: none;
+  height: 70px;
+}
+#menu li a {
+  padding: 0px 10px;
+  color: #fff;
+  text-decoration: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  display: table-cell;
+  vertical-align: middle;
+  height: 70px;
+}
+#menu li div {
+  padding: 22px 10px;
+  color: #fff;
+  text-decoration: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  display: block;
+}
+#menu li input {
+  float: right;
+}
+
+#menu.default {
+  box-shadow: 5px 5px 5px #838383;
+  -moz-box-shadow: 5px 5px 5px #838383;
+  -webkit-box-shadow: 5px 5px 5px #838383;
+}
+#menu a img {
+  max-height: 68px;
+  height: auto;
+  width: auto;
+
+
+}
+#settings div {
+  padding-top: 13px !important;
+}
+#logo {
+  width: 25%;
+}
+#title {
+  width: 25%;
+}
+#settings {
+  width: 20%;
+}
+#changeparam {
+  width: 15%;
+}
+#loginmenu {
+  width: 15%;
+}
+
+#loginmenu input, #changeparam input {
+    width: 70px;
+    height: 20px;
+    margin:0px 15px 0 0;
+    padding:3px 10px;
+    background:#ccc;
+    border-width: 2px;
+    border-style: solid;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    border-radius:3px;
+    font:700 10px Arial, san-serif;
+    text-transform:uppercase;
+    position:relative;
+    cursor:pointer;
+    color:#000;
+}
+#loginmenu input:hover, #changeparam input:hover {
+  color:#fff;
+}
+
+#changeparam input {
+  width: auto;
+}

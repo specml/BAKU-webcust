@@ -1,0 +1,36 @@
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+
+<body style="display:flex;justify-content:center;flex-direction:column">
+	<div style="height:90%;display:flex;justify-content:center"><img id="img" style="height:100%;display:flex;margin:0 auto" src=""/></div>
+</body>
+
+
+<script>
+	
+		function findGetParameter(parameterName) {
+				var result = null,
+						tmp = [];
+				var items = location.search.substr(1).split("&");
+				for (var index = 0; index < items.length; index++) {
+						tmp = items[index].split("=");
+						if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+				}
+				return result;
+		}
+
+		//document.addEventListener("DOMContentLoaded", function() {
+			var element = document.getElementById('img');
+			//element.innerHTML = data;
+			var host = window.location.host;
+			var compname = findGetParameter("comcode");
+			var artcode = findGetParameter("artcode");
+			element.setAttribute("src","http://" + host + "/" + compname + "/" + artcode); 
+		//});
+
+</script>
+
+
+</html>

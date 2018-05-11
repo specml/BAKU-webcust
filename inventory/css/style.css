@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Serif');
+* {
+	font-family: 'PT Serif', serif;
+	font-weight: 700;
+}
+body {
+	margin: 0;
+}
+p {
+	text-align: center;
+	font-size: 18px;
+	font-weight: 700;
+	margin: 0;
+	padding: 0;
+}
+.dc-chart  {
+	display: inline-table;
+}
+.menu {
+    display: block;
+    background: #9F9F9F;
+    overflow: hidden;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    text-shadow: 0 1px 1px black;
+    box-shadow: 5px 5px 5px #838383;
+    -moz-box-shadow: 5px 5px 5px #838383;
+    -webkit-box-shadow: 5px 5px 5px #838383;
+}
+.menu div {
+    margin: 0;
+    padding: 5px 10px 0 10px;
+}
+.menu input[type=text] {
+	width: 170px;
+	font-size: 40px
+}
+.menu input[type=button] {
+	margin: 20px 120px 0 0;
+	padding: 1px 6px;
+    background:#ccc;
+    border-width: 2px;
+    border-style: solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 33px;
+    cursor: pointer;
+    color:#000;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.menu input[type=button]:hover {
+	color:#fff;
+}
+.menu input[type=image] {
+	float: right;
+	height: 50px;
+	width: 50px;
+	opacity: 0.5;
+	margin: 13px 13px 0px 0px;
+}
+.menu input[type=image]:hover {
+	opacity: 1;
+}
+#rightMenuDiv {
+	max-width: none;
+	min-width: 40px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+#leftMenuDiv {
+	max-width: none;
+}
+.ef p {
+    display: inline-block;
+    margin: 0;
+    color: #000;
+    font-size: 45px;
+    text-shadow: 0 1px 1px gray;
+    min-width: 375px;
+    text-align: left;
+}
+.ef p_p {
+    text-shadow: none;
+    text-align: left;
+    padding: 1px 6px;
+    background: #ccc;
+    border-color: buttonface;
+    border-width: 2px;
+    border-style: solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 33px;
+    cursor: pointer;
+    color:#000;
+    line-height: 52px;
+    min-width: 50px;
+    text-align: center;
+}
+div.ef {
+	min-width: 315px;
+}
+#tableContainer {
+    display: table;
+    width: 99%;
+    margin: 0 0.5%;
+    color: #2a2a2a;
+}
+#tableContainer div p {
+	font-size: 50px;
+}
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+#error {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    background: #BF3030;
+    background: rgba(191,48,48,1);
+    color: white;
+    opacity: 0.95;
+}
+#error p {
+    margin: 0 100px;
+    font-size: 70px;
+    text-align: center;
+    position: relative;
+    height: 40%;
+    top: 30%;
+}
+.popup {
+	position: fixed;
+	top: 100px;
+	left: 50%;
+	display: none;
+	overflow: hidden;
+	background: #fff;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	z-index: 100;
+	behavior: url(PIE.htc);
+}
+.popup h2 {
+    margin: 30px 30px;
+    font-size: 60px;
+    font-weight: 700;
+    opacity: 0.6;
+}
+.reg_form {
+    margin-left:-400px;
+    width: 800px;
+}
+.reg_form form {
+	margin-top: 20px;
+	overflow: hidden;
+}
+.reg_form label {
+	margin: 15px 30px 0 30px;
+	width: 200px;
+	height: 70px;
+	font-size: 45px;
+	display: inline-block;
+	vertical-align: top;
+}
+.reg_form input[type=text], .reg_form input[type=password], .reg_form select {
+	margin: 25px 40px 0 0;
+	padding: 0 6px;
+	width: 400px;
+	height: 44px;
+	font-weight: 400;
+	font-size: 32px;
+	border: 2px solid #ccc;
+	box-sizing: border-box;
+}
+.reg_form input[type=text] {
+	text-transform:uppercase;
+}
+.reg_form input[type=submit] {
+	margin: 15px 30px 30px 0px;
+	padding:3px 10px;
+	float: right;
+	background: #ccc;
+	border-width: 2px;
+	border-style: solid;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	font-weight: 700;
+	font-size: 35px;
+	cursor: pointer;
+	color: #000;
+	display: inline-block;
+}
+.reg_form input[type=submit] {
+    margin-bottom: 0;
+}
+.reg_form input[type=submit]:hover {
+	color:#f0f0f0;
+}
+#overlay {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: none;
+	background: #000;
+	opacity: 0.8;
+}
