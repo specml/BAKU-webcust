@@ -684,7 +684,7 @@
               container = document.getElementById("itemimg");
               container.innerHTML = "<span/>";
               item = document.createElement("img");
-              item.setAttribute("src", "../" + $("#company option:selected").getAttribute("sn") + "/" + arr[0] + ".jpg");
+              item.setAttribute("src", "../" + $("#company option:selected").attr("sn") + "/" + arr[0] + ".jpg");
               container.appendChild(item);
             } else {
               blinkError("ОШИБКА!!!<br/>Неправильный код товара!", 600);
