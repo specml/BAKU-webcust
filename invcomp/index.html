@@ -664,6 +664,7 @@
         aData.forEach(function (arr) {
           var opt = document.createElement("option");
           opt.setAttribute("value", arr[0]);
+          opt.setAttribute("sn", arr[2]);
           if (getParameterByName("comp") == arr[0])
             document.title = '(' + arr[1] + ') ' + document.title;
           opt.innerHTML = arr[1];

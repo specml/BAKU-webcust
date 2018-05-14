@@ -596,9 +596,9 @@
         $("#error").fadeIn(delay);
         setTimeout('$("#error").fadeOut(' + delay + ');', 1000 + delay);
       }
-      function loadCompanies() {
+      function loadCompanies(f) {
         var request = getXmlHttp();
-        request.open("GET", "../WebLoadCompanies.hal", false);
+        request.open("GET", "../WebLoadCompanies.hal?" + ((f) ? "all=true" : ""), false);
         request.send(null);
         if (request.status == 200) {
           var aData = csvToArray(request.responseText);
@@ -606,10 +606,14 @@
           aData.forEach(function (arr) {
             var opt = document.createElement("option");
             opt.setAttribute("value", arr[0]);
+            opt.setAttribute("sn", arr[2]);
+            if (getParameterByName("comp") == arr[0])
+              document.title = '(' + arr[1] + ') ' + document.title;
             opt.innerHTML = arr[1];
             mySelect.appendChild(opt);
           });
-          mySelect.value = getParameterByName("comp");
+          if (getParameterByName("comp"))
+            mySelect.value = getParameterByName("comp");
         }
       }
       function artcodeEnter(e) {
@@ -780,7 +784,7 @@
       document.getElementById("close").onclick = a_closeClick;
       document.getElementById("loginForm").onsubmit = loginFormSubmit;
       document.getElementById("loginbtn").onclick = showLogin;
-      loadCompanies();
+      loadCompanies(true);
       var requestli = getXmlHttp();
       requestli.open("GET", "../WebMyLogIn.hal", false);
       requestli.send(null);
