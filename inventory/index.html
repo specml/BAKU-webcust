@@ -695,6 +695,11 @@
             xhr.open("GET", "../WebFindItemST.hal?p1=" + document.getElementById("inventory_p_p").innerHTML + "&p2=" + artcode + "&p3=" + qty + "&comp=" + getParameterByName("comp"), false);
             xhr.send();
             if (xhr.responseText) {
+              if (xhr.responseText=="oked"){
+                blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!<br/>Обновите страницу.", 600);
+                beepError();
+                return;
+              }
               artcode = xhr.responseText.split("\r\n");
               var name = artcode[1];
               qty = ((parseInt(artcode[3])) ? (parseInt(artcode[3])) : 0);
