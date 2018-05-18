@@ -427,7 +427,7 @@
       </div>
       <div id="tableContainer"></div>
     </div>
-    <div id="itemimg"></div>
+    <div id="itemimg" style="display:none"></div>
     <div class="popup reg_form">
       <a id="close" title="Закрыть" href="#">Закрыть</a>
       <form id="loginForm" method="post">
@@ -736,6 +736,7 @@
               img.src = "../" + $("#company option:selected").attr("sn") + "/" + artcode + ".jpg";
               img.onload = function(){
                 var imgcontainer = document.getElementById("itemimg");
+                imgcontainer.style.display = "block";
                 imgcontainer.innerHTML = "";
                 item = document.createElement("img");
                 item.setAttribute("src", img.src);
@@ -746,6 +747,7 @@
               };
               img.onerror = function() {
                 document.getElementById("itemimg").innerHTML = "";
+                document.getElementById("itemimg").style.display = "none";
                 document.getElementById("tableContainer").style.marginBottom = "0";
                 var coordinates = getOffset(row);
                 window.scrollTo(coordinates.left, coordinates.top - 170);
