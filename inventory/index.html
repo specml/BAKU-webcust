@@ -3,350 +3,389 @@
   <head>
     <title>Инвентаризация</title>
     <meta charset="UTF-8">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <style type="text/css">
-      @import url('https://fonts.googleapis.com/css?family=PT+Serif');
-      * {
-        font-family: 'PT Serif', serif;
-        font-weight: 700;
-        z-index: 1;
-      }
-      html, body {
-        height: 100%;
-      }
-      body {
-        margin: 0;
-      }
-      p {
-        text-align: center;
-        font-size: 18px;
-        font-weight: 700;
-        margin: 0;
-        padding: 0;
-      }
-      .dc-chart  {
-        display: inline-table;
-      }
-      .menu {
-        display: block;
-        background-color: #9F9F9F;
-        overflow: hidden;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        text-shadow: 0 1px 1px black;
-        box-shadow: 5px 5px 5px #838383;
-        -moz-box-shadow: 5px 5px 5px #838383;
-        -webkit-box-shadow: 5px 5px 5px #838383;
-      }
-      .menu div {
-        margin: 0;
-        padding: 5px 10px 0 10px;
-      }
-      .menu input[type=text] {
-        width: 170px;
-        font-size: 40px
-      }
-      .menu input[type=button] {
-        margin: 20px 120px 0 0;
-        padding: 1px 6px;
-        background-color:#ccc;
-        border-width: 2px;
-        border-style: solid;
-        -moz-border-radius: 3px;
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        font-weight: 700;
-        font-size: 33px;
-        cursor: pointer;
-        color:#000;
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
-      .menu input[type=button]:hover {
-        color:#fff;
-      }
-      .menu input[type=image] {
-        float: right;
-        height: 50px;
-        width: 50px;
-        opacity: 0.5;
-        margin: 13px 13px 0px 0px;
-      }
-      .menu input[type=image]:hover {
-        opacity: 1;
-      }
-      #rightMenuDiv {
-        max-width: none;
-        min-width: 40px;
-        position: absolute;
-        top: 0px;
-        right: 0px;
-      }
-      #leftMenuDiv {
-        max-width: none;
-      }
-      .ef p {
-        display: inline-block;
-        margin: 0;
-        color: #000;
-        font-size: 45px;
-        text-shadow: 0 1px 1px gray;
-        min-width: 375px;
-        text-align: left;
-      }
-      .ef p_p {
-        text-shadow: none;
-        text-align: left;
-        padding: 1px 6px;
-        background-color: #ccc;
-        border-color: buttonface;
-        border-width: 2px;
-        border-style: solid;
-        -moz-border-radius: 3px;
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        font-weight: 700;
-        font-size: 33px;
-        cursor: pointer;
-        color:#000;
-        line-height: 52px;
-        min-width: 50px;
-        text-align: center;
-      }
-      div.ef {
-        min-width: 315px;
-      }
-      #tableContainer {
-        display: table;
-        width: 99%;
-        margin: 0 0.5%;
-        color: #2a2a2a;
-      }
-      #tableContainer div p {
-        font-size: 50px;
-      }
-      .left {
-        float: left;
-      }
-      .right {
-        float: right;
-      }
-      #error {
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: none;
-        background-color: #BF3030;
-        background-color: rgba(191,48,48,1);
-        color: white;
-        opacity: 0.95;
-      }
-      #error p {
-        margin: 0 100px;
-        font-size: 70px;
-        text-align: center;
-        position: relative;
-        height: 40%;
-        top: 30%;
-      }
-      .popup {
-        position: fixed;
-        top: 100px;
-        left: 50%;
-        display: none;
-        overflow: hidden;
-        background-color: #fff;
-        -moz-border-radius: 15px;
-        -webkit-border-radius: 15px;
-        border-radius: 15px;
-        z-index: 100;
-        behavior: url(PIE.htc);
-      }
-      .popup h2 {
-        margin: 30px 30px;
-        font-size: 60px;
-        font-weight: 700;
-        opacity: 0.6;
-      }
-      .reg_form {
-        margin-left:-400px;
-        width: 800px;
-      }
-      .reg_form form {
-        margin-top: 20px;
-        overflow: hidden;
-      }
-      .reg_form label {
-        margin: 15px 30px 0 30px;
-        width: 200px;
-        height: 70px;
-        font-size: 45px;
-        display: inline-block;
-        vertical-align: top;
-      }
-      .reg_form input[type=text], .reg_form input[type=password], .reg_form select {
-        margin: 25px 40px 0 0;
-        padding: 0 6px;
-        width: 400px;
-        height: 44px;
-        font-weight: 400;
-        font-size: 32px;
-        border: 2px solid #ccc;
-        box-sizing: border-box;
-      }
-      .reg_form input[type=text] {
-        text-transform:uppercase;
-      }
-      .reg_form input[type=submit] {
-        margin: 15px 30px 30px 0px;
-        padding:3px 10px;
-        float: right;
-        background-color: #ccc;
-        border-width: 2px;
-        border-style: solid;
-        -moz-border-radius: 3px;
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        font-weight: 700;
-        font-size: 35px;
-        cursor: pointer;
-        color: #000;
-        display: inline-block;
-      }
-      .reg_form input[type=submit] {
-        margin-bottom: 0;
-      }
-      .reg_form input[type=submit]:hover {
-        color:#f0f0f0;
-      }
-      #overlay {
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: none;
-        background-color: #000;
-        opacity: 0.8;
-      }
-
-      #inventoryInfo {
-        height: 40px;
-        display: block;
-        position: relative;
-      }
-      #inventoryInfo p {
-        text-align: left;
-        font-style: italic;
-        font-size: 31px;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        margin-right: 20px;
-        opacity: 0.7;
-      }
-      #inventory_p p_p:hover {
-        cursor: pointer;
-        color:#fff;
-      }
-      #tableContainer div.white, #tableContainer div.grey {
-        display: table-cell;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        padding: 10px;
-      }
-      .white {
-        width: 20%;
-        background-color: #ffffff;
-        background-color: rgba(255,255,255,0.85);
-      }
-      .grey {
-        width: 60%;
-        background-color: #efefef;
-        background-color: rgba(239,239,239,0.75);
-      }
-      .grey p {
-        text-align: left;
-      }
-      .scaned {
-        width: 20%;
-      }
-      .item {
-        width: 80%;
-      }
-      .total-text, .total-qty  {
-          float: right;
-      }
-      .total-text p, .total-qty p {
-        font-size: 40px;
-      }
-      .total-text p {
-        text-align: right;
-      }
-      #notlogined, #nostvcnr {
-        margin-top: 240px;
-        width:100%;
-        height:100%;
-        position:fixed;
-        top:0;
-        left:0;
-        display: block;
-      }
-      #notlogined p, #nostvcnr p {
-        line-height: 1;
-        font-size: 50px;
-        color: #d6d6d6;
-        color: rgba(51, 51, 51, 0.2);
-      }
-      #page {
-        overflow: hidden;
-      }
-      .popup a#close, .menu a#inventoryChngCancel {
-        width: 70px;
-        height: 70px;
-        display: block;
-        text-indent: -9999px;
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: url(./img/close.png) no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        opacity: 0.3;
-      }
-      .popup a#close:hover, .menu a#inventoryChngCancel:hover {
-        opacity: 0.5;
-      }
-      .menu a#inventoryChngCancel {
-        position: absolute;
-        top: auto;
-        right: auto;
-        margin-top: -5px;
-      }
-      #itemimg {
-        width: 100%;
-        z-index: 0;
-        height: 100%;
-      }
-      #itemimg img {
-        width: 100%;
-        vertical-align: middle;
-      }
-      #itemimg span {
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-        margin: -50% 0 0 0;
-      }
-
-    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   </head>
+  <style type="text/css">
+  @import url('https://fonts.googleapis.com/css?family=PT+Serif');
+  * {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    z-index: 1;
+  }
+  html, body {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+  }
+  p {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+  }
+  .dc-chart  {
+    display: inline-table;
+  }
+  .menu {
+    display: block;
+    background-color: #9F9F9F;
+    overflow: hidden;
+    padding-bottom: 15px;
+    text-shadow: 0 1px 1px black;
+    position: fixed;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 2;
+    box-shadow: 5px 5px 5px #838383;
+    -moz-box-shadow: 5px 5px 5px #838383;
+    -webkit-box-shadow: 5px 5px 5px #838383;
+  }
+  .menu div {
+    margin: 0;
+    min-height: 65px;
+    padding: 5px 10px 0 10px;
+  }
+  .menu input[type=text] {
+    width: 170px;
+    font-size: 40px
+  }
+  .menu input[type=button] {
+    margin: 20px 120px 0 0;
+    padding: 1px 6px;
+    background-color:#cccccc;
+    border-width: 2px;
+    border-style: solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 33px;
+    cursor: pointer;
+    color:#000000;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .menu input[type=button]:hover {
+    color:#ffffff;
+  }
+  .menu input[type=image] {
+    float: right;
+    height: 50px;
+    width: 50px;
+    opacity: 0.5;
+    margin: 13px 13px 0px 0px;
+  }
+  .menu input[type=image]:hover {
+    opacity: 1;
+  }
+  .menu input[type=checkbox] {
+    width: 40px;
+    height: 40px;
+    margin: 5px 15px 0 40px;
+  }
+  #rightMenuDiv {
+    max-width: none;
+    min-width: 40px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+  #leftMenuDiv {
+    overflow: hidden;
+  }
+  #leftMenuDiv label {
+    font-size: 35px;
+  }
+  .ef p {
+    display: inline-block;
+    margin: 0;
+    color: #000000;
+    font-size: 45px;
+    text-shadow: 0 1px 1px gray;
+    min-width: 375px;
+    text-align: left;
+  }
+  .ef p_p {
+    text-shadow: none;
+    text-align: left;
+    padding: 1px 6px;
+    background-color: #cccccc;
+    border-color: #eaeaea;
+    border-width: 2px;
+    border-style: solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 33px;
+    cursor: pointer;
+    color:#000000;
+    line-height: 52px;
+    min-width: 50px;
+    text-align: center;
+  }
+  div.ef {
+    min-width: 555px;
+    float: left;
+  }
+  div .ef * {
+    float:left;
+  }
+  #error {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    background-color: #BF3030;
+    background-color: rgba(191,48,48,1);
+    color: white;
+    opacity: 0.95;
+    z-index: 3;
+  }
+  #error p {
+    margin: 0 100px;
+    font-size: 70px;
+    text-align: center;
+    position: relative;
+    height: 40%;
+    top: 30%;
+  }
+  .popup {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    display: none;
+    overflow: hidden;
+    background-color: #ffffff;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    z-index: 4;
+    behavior: url(PIE.htc);
+  }
+  .popup h2 {
+    margin: 30px 30px;
+    font-size: 60px;
+    font-weight: 700;
+    opacity: 0.6;
+  }
+  .reg_form {
+    margin-left:-400px;
+    width: 800px;
+  }
+  .reg_form form {
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  .reg_form label {
+    margin: 15px 30px 0 30px;
+    width: 200px;
+    height: 70px;
+    font-size: 45px;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .reg_form input[type=text], .reg_form input[type=password], .reg_form select {
+    margin: 25px 40px 0 0;
+    padding: 0 6px;
+    width: 400px;
+    height: 44px;
+    font-weight: 400;
+    font-size: 32px;
+    border: 2px solid #ccc;
+    box-sizing: border-box;
+  }
+  .reg_form input[type=text] {
+    text-transform:uppercase;
+  }
+  .reg_form input[type=submit] {
+    margin: 15px 30px 30px 0px;
+    padding:3px 10px;
+    float: right;
+    background-color: #cccccc;
+    border-width: 2px;
+    border-style: solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 35px;
+    cursor: pointer;
+    color: #000000;
+    display: inline-block;
+  }
+  .reg_form input[type=submit] {
+    margin-bottom: 0;
+  }
+  .reg_form input[type=submit]:hover {
+    color:#f0f0f0;
+  }
+  #overlay {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    background-color: #000000;
+    opacity: 0.8;
+    z-index: 3;
+  }
+
+  #inventoryInfo {
+    height: 40px;
+    float: right;
+    width: 200px;
+    position: relative;
+  }
+  #inventoryInfo p {
+    font-style: italic;
+    font-size: 31px;
+    position: absolute;
+    right: 0;
+    margin: 10px 20px 0 0;
+    opacity: 0.7;
+  }
+  #inventory_p p_p:hover {
+    cursor: pointer;
+    color:#ffffff;
+  }
+  #notlogined, #nostvcnr {
+    margin-top: 400px;
+    width:100%;
+    height:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    display: block;
+  }
+  #notlogined p, #nostvcnr p {
+    line-height: 1;
+    font-size: 50px;
+    color: #d6d6d6;
+    color: rgba(51, 51, 51, 0.2);
+  }
+  #page {
+    overflow: hidden;
+    padding-top: 170px;
+  }
+  .popup a#close, .menu a#inventoryChngCancel {
+    width: 70px;
+    height: 70px;
+    display: block;
+    text-indent: -9999px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: url(./img/close.png) no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    opacity: 0.3;
+  }
+  .popup a#close:hover, .menu a#inventoryChngCancel:hover {
+    opacity: 0.5;
+  }
+  .menu a#inventoryChngCancel {
+    position: static;
+    margin-top: -5px;
+  }
+  #itemimg {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+  }
+  #itemimg img {
+    width: 100%;
+    vertical-align: middle;
+  }
+  #itemimg span {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin: -50% 0 0 0;
+  }
+  #tableContainer {
+    width: calc(100% - 6px);
+    margin: 0 3px;
+  }
+  #tableContainer p, .tableHeader p {
+    font-size: 40px;
+    word-wrap: break-word;
+  }
+  .itemCointainer {
+    border: #faebd7 4px solid;
+    box-sizing: border-box;
+    display: table-cell;
+  }
+  .itemCointainer .code {
+    background-color: #ffc77c;
+  }
+  .itemCointainer .name {
+  }
+  .qtyContainer {
+    width: 18%;
+    border: #faebd7 4px solid;
+    box-sizing: border-box;
+    display: table-cell;
+    position: relative;
+  }
+  .qtyContainer .difference {
+    background-color: #ffc77c;
+  }
+  .qtyContainer .heightholder {
+    height: 100%;
+    width: 0;
+    float: left;
+    color: transparent;
+  }
+  .tableHeader {
+    background-color: #eaeaea;
+    display: table;
+    border: solid 5px #9f9f9f;
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  #tableContainer .itemCointainer .code {
+    background-color: #faebd7;
+  }
+  #tableContainer .qtyContainer .difference {
+    background-color: #faebd7;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  #tableContainer>div {
+    width: 100%;
+    display: table;
+    margin-bottom: 10px;
+  }
+  #tableContainer>div.odd {
+    background-color: #eaeaea;
+  }
+  #tableContainer .odd .itemCointainer .code {
+    background-color: #e4d8c8;
+  }
+  #tableContainer .odd .itemCointainer {
+    border-color: #e4d8c8;
+  }
+  #tableContainer .odd .qtyContainer .difference {
+    background-color: #e4d8c8;
+  }
+  #tableContainer .odd .qtyContainer {
+    border-color: #e4d8c8;
+  }
+  .highlighted {
+    background-color: #ff7f50;
+  }
+</style>
   <body>
     <div class="menu">
       <div id="leftMenuDiv">
@@ -355,31 +394,34 @@
           <p_p id="inventory_p_p" style="display:none;"></p_p>
           <input type="text" id="inventory">
           <a id="inventoryChngCancel" title="Отменить" href="#">Отменить</a>
+          <div id="okFlagDiv" style="display:none;">
+            <input type="checkbox" id="okFlag">
+            <label for="okFlag">OK</label>
+          </div>
         </div>
         <div class="ef">
           <p>Код товара:</p>
           <input autofocus type="text" id="artCode">
         </div>
-        <div id="inventoryInfo" style="display:none;"></div>
+        <div id="inventoryInfo"></div>
       </div>
       <div id="rightMenuDiv">
         <input id="loginbtn" type="image" src="img/li.png" alt="Войти" title="Войти">
       </div>
     </div>
     <div id="page" style="display: block;">
-      <div class="item left" style="border-bottom: solid 8px #9F9F9F; padding-bottom:5px;">
-        <p style="font-size: 40px; border-right: solid 3px #9F9F9F;">Товар</p>
-      </div>
-      <div class="scaned right" style="border-bottom: solid 8px #9F9F9F; padding-bottom:5px;">
-        <p style="font-size: 40px;">Кол-во</p>
+      <div class="tableHeader">
+        <div class="itemCointainer">
+          <div class="code"><p>Код товара</p></div>
+          <div class="name"><p>Наименование</p></div>
+        </div>
+        <div class="qtyContainer">
+          <div><p>Склад</p></div>
+          <div><p>Факт.</p></div>
+          <div class="difference"><p>Разница</p></div>
+        </div>
       </div>
       <div id="tableContainer"></div>
-      <div class="total-qty white">
-        <p id="total-qty">0</p>
-      </div>
-      <div class="total-text white">
-        <p>Итого:</p>
-      </div>
     </div>
     <div id="itemimg"></div>
     <div class="popup reg_form">
@@ -432,7 +474,11 @@
         }
         xhr.send(aParams.join("&") + "&name=" + encodeURIComponent("Log In"));
         if (xhr.responseText != "") {
-          location.search = "?comp=" + $("#company").val();
+          var tstr;
+          tstr = "?comp=" + $("#company").val();
+          if ((getParameterByName("comp")==$("#company").val()) && (getParameterByName("st")))
+           tstr += ("&st=" + getParameterByName("st"));
+          location.search = tstr;
         } else {
           showLogin(false);
         }
@@ -467,7 +513,7 @@
       }
       function getParameterByName(name, url) {
         if (!url)
-          url = window.location.href;
+          url = location.href;
         name = name.replace(/[\[\]]/g, '\\$&');
         var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
                 results = regex.exec(url);
@@ -617,82 +663,91 @@
         }
       }
       function artcodeEnter(e) {
-        var xhr = getXmlHttp();
-        var x = document.getElementById("artCode").value;
-        var artcode, qty;
         if (!e)
           e = window.event;
         if (e.keyCode == "13") {
-          if (x.substring(0, 2) == "ST") {
-            var res = "";
-            location.search.split("&").forEach(function (p) {
-              if (p.indexOf("st") == -1)
-                res += p
-            });
-            if (res.slice(0, 1) == "&")
-              res = "?" + res.slice(1);
-            location.search = res + (res ? "&" : "") + "st=" + x.slice(2);
-          } else {
-            if (document.getElementById("inventory_p_p").innerHTML == "") {
-              blinkError("ОШИБКА!!!<br/>Сначала введите код инвентаризации!", 700);
-              beepError();
-            } else {
-              if ((parseInt(x) <= 10000) && (x.length < 5)) {
-                var elem = document.getElementsByClassName("white left")[1];
-                if (elem) {
-                  artcode = document.getElementsByClassName("white left")[0].childNodes[0].innerHTML;
-                  qty = x;
-                } else {
-                  blinkError("ОШИБКА!!!<br/>Сначала введите код товара!", 700);
-                  beepError();
-                }
-              } else {
-                artcode = x;
-                qty = 1
-              }
-            }
+          if (document.getElementById("okFlag").checked) {
+            blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!", 700);
+            beepError();
+            this.value = "";
+            return false;
           }
-          if (artcode) {
-            xhr.open("GET", "../WebFindItemST.hal?p1=" + document.getElementById("inventory_p_p").innerHTML + "&p2=" + artcode + "&p3=" + qty, false);
+          var x = document.getElementById("artCode").value;
+          if (x.substring(0, 2) == "ST") {
+            location.search = "?comp=" + $("#company").val() + "&st=" + x.substring(2, x.length);
+          } else {
+            var artcode,qty;
+            if (parseInt(x) < 1000 && x.length < 4) {
+              var elem = document.getElementsByClassName("highlighted")[0];
+              if (elem) {
+                qty = parseInt(x);
+                artcode = elem.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[0].innerHTML;
+
+              } else {
+                blinkError("ОШИБКА!!!<br/>Сначала введите код товара!", 700);
+                beepError();
+              }
+            } else {
+              artcode = x;
+              qty = 1;
+            }
+            var xhr = getXmlHttp();
+            xhr.open("GET", "../WebFindItemST.hal?p1=" + document.getElementById("inventory_p_p").innerHTML + "&p2=" + artcode + "&p3=" + qty + "&comp=" + getParameterByName("comp"), false);
             xhr.send();
             if (xhr.responseText) {
-              var arr = xhr.responseText.split('\r\n');
-              var container = document.getElementById("tableContainer");
-              if (container.childNodes[0]) {
-                container.removeChild(container.childNodes[0]);
+              artcode = xhr.responseText.split("\r\n");
+              var name = artcode[1];
+              qty = ((parseInt(artcode[3])) ? (parseInt(artcode[3])) : 0);
+              var instock = ((parseInt(artcode[2])) ? (parseInt(artcode[2])) : 0);
+              artcode = artcode[0];
+              var p = findDivPByValue(artcode);
+              var row;
+              if (p) {
+                row = p.parentNode.parentNode.parentNode;
+                row.childNodes[1].childNodes[2].childNodes[0].innerHTML = qty;
+                row.childNodes[1].childNodes[3].childNodes[0].innerHTML = qty - instock;
+                if (document.getElementsByClassName("highlighted")[0])
+                  document.getElementsByClassName("highlighted")[0].removeAttribute("class");
+                row.childNodes[1].childNodes[2].setAttribute("class","highlighted");
+              } else {
+                var container = document.getElementById("tableContainer");
+                row = document.createElement("div");
+                if (((container.childNodes.length+1) % 2) == 0) row.setAttribute("class", "odd");
+                if (document.getElementsByClassName("highlighted")[0])
+                document.getElementsByClassName("highlighted")[0].removeAttribute("class");
+                row.innerHTML = "<div class=\"itemCointainer\"><div class=\"code\"><p>" +
+                artcode + "</p></div><div class=\"name\"><p>" +
+                name + "</p></div></div><div class=\"qtyContainer\"><div class=\"heightholder\"><p>.</p><p>.</p><p>.</p></div><div><p>" +
+                instock + "</p></div><div class=\"highlighted\"><p>" +
+                qty + "</p></div><div class=\"difference\"><p>" +
+                (qty - instock) + "</p></div></div>";
+                container.appendChild(row);
               }
-              var item = document.createElement("div");
-              item.style.overflow = "hidden";
-              div = document.createElement("div");
-              div.setAttribute("class", "lha white left");
-              div.innerHTML = "<p>" + arr[0] + "</p>";
-              item.appendChild(div);
-
-              div = document.createElement("div");
-              div.innerHTML = "<p>" + arr[1] + "</p>";
-              div.setAttribute("class", "grey left");
-              item.appendChild(div);
-
-              div = document.createElement("div");
-              div.setAttribute("class", "white left");
-              div.innerHTML = "<p>" + arr[2] + "</p>";
-              item.appendChild(div);
-
-              container.appendChild(item);
-              document.getElementById("total-qty").innerHTML = arr[3];
-
-              container = document.getElementById("itemimg");
-              container.innerHTML = "<span/>";
-              item = document.createElement("img");
-              item.setAttribute("src", "../" + $("#company option:selected").attr("sn") + "/" + arr[0] + ".jpg");
-              container.appendChild(item);
+              var img = new Image();
+              img.src = "../" + $("#company option:selected").attr("sn") + "/" + artcode + ".jpg";
+              img.onload = function(){
+                var imgcontainer = document.getElementById("itemimg");
+                imgcontainer.innerHTML = "";
+                item = document.createElement("img");
+                item.setAttribute("src", img.src);
+                imgcontainer.appendChild(item);
+                document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
+                var coordinates = getOffset(row);
+                window.scrollTo(coordinates.left, coordinates.top - 170);
+              };
+              img.onerror = function() {
+                document.getElementById("itemimg").innerHTML = "";
+                document.getElementById("tableContainer").style.marginBottom = "0";
+                var coordinates = getOffset(row);
+                window.scrollTo(coordinates.left, coordinates.top - 170);
+              }
             } else {
               blinkError("ОШИБКА!!!<br/>Неправильный код товара!", 600);
               beepError();
             }
           }
           this.value = "";
-          return false;
+          return;
         }
       }
       function inventoryEnter(e) {
@@ -702,10 +757,12 @@
           var res = "";
           location.search.split("&").forEach(function (p) {
             if (p.indexOf("st") == -1)
-              res += p
+              res += p;
           });
           if (res.slice(0, 1) == "&")
             res = "?" + res.slice(1);
+          if (!getParameterByName("comp"))
+            res += ("&comp=" + $("#company").val());
           location.search = res + (res ? "&" : "") + "st=" + $("#inventory").val();
         }
       }
@@ -713,15 +770,24 @@
         document.getElementById("inventory").style.display = "inline-block";
         document.getElementById("inventoryChngCancel").style.display = "inline-block";
         this.style.display = "none";
+        document.getElementById("okFlagDiv").style.display = "none";
       }
       function inventoryChngCancel() {
         document.getElementById("inventory").style.display = "none";
         document.getElementById("inventory_p_p").innerHTML = getParameterByName("st");
         document.getElementById("inventory_p_p").style.display = "inline-block";
+        document.getElementById("okFlagDiv").style.display = "block";
         document.getElementById("inventoryInfo").style.display = "block";
         document.getElementById("inventoryChngCancel").style.display = "none";
         return false;
       }
+      function okFlagClick() {
+        var request = getXmlHttp();
+        request.open("GET", "../WebChangeStockTakeVc.hal?p1=" + getParameterByName("st") + "&p2=" + ((this.checked)?"1":"0") + "&comp=" + getParameterByName("comp"), false);
+        request.send(null);
+        return;
+      }
+
       function drawTable(param) {
         var comp = getParameterByName("comp")
         document.getElementById("inventoryChngCancel").style.display = "none";
@@ -731,6 +797,7 @@
           document.getElementById("inventory").style.display = "none";
           document.getElementById("inventory_p_p").innerHTML = param;
           document.getElementById("inventory_p_p").style.display = "inline-block";
+          document.getElementById("okFlagDiv").style.display = "block";
           document.getElementById("inventoryChngCancel").style.display = "none";
           document.getElementById("nostvcnr").style.display = "none";
           var request = getXmlHttp();
@@ -761,9 +828,25 @@
                 break;
               default:
                 var rawArr = request.responseText.split("\r\n");
-                document.getElementById("inventoryInfo").style.display = "block";
-                document.getElementById("inventoryInfo").innerHTML = "<p>Склад: " + rawArr[0] + "</p>";
-                document.getElementById("total-qty").innerHTML = rawArr[1];
+                var container = document.getElementById("tableContainer");
+                container.innerHTML = "";
+                rawArr.forEach(function(a,i) {
+                  a = a.split(";;;");
+                  if (a.length>2) {
+                    var row = document.createElement("div");
+                    if (((i+1) % 2) == 0) row.setAttribute("class", "odd");
+                    row.innerHTML = "<div class=\"itemCointainer\"><div class=\"code\"><p>" +
+                    a[0] + "</p></div><div class=\"name\"><p>" +
+                    a[1] + "</p></div></div><div class=\"qtyContainer\"><div class=\"heightholder\"><p>.</p><p>.</p><p>.</p></div><div><p>" +
+                    ((parseInt(a[2])) ? (parseInt(a[2])) : 0)  + "</p></div><div><p>" +
+                    ((parseInt(a[3])) ? (parseInt(a[3])) : 0) + "</p></div><div class=\"difference\"><p>" +
+                    (a[3] - a[2]) + "</p></div></div>";
+                    container.appendChild(row);
+                  } else {
+                    document.getElementById("inventoryInfo").innerHTML = "<p>Склад: " + a[0] + "</p>";
+                    document.getElementById("okFlag").checked = (a[1]==1);
+                  }
+                });
             }
           }
         } else {
@@ -784,15 +867,20 @@
       document.getElementById("close").onclick = a_closeClick;
       document.getElementById("loginForm").onsubmit = loginFormSubmit;
       document.getElementById("loginbtn").onclick = showLogin;
+      document.getElementById("okFlag").onclick = okFlagClick;
       loadCompanies(true);
+      $(document).ready(function(){
+        $(this).scrollTop(0);
+      });
       var requestli = getXmlHttp();
       requestli.open("GET", "../WebMyLogIn.hal", false);
       requestli.send(null);
       if (requestli.status == 200 && requestli.responseText != "") {
+        if (!($("#company").val()))
+          $("#company").val(requestli.responseText.split(",")[1]);
         drawTable(getParameterByName("st"));
-      } else {
+      } else
         showLogin(true);
-      }
 
     </script>
   </body>

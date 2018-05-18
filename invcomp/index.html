@@ -773,12 +773,10 @@
           arr.splice(arr.length - 2);
           var tableContainer = document.getElementById("tableContainer");
           tableContainer.innerHTML = "";
-          var counter = 0;
-          arr.forEach(function (a) {
+          arr.forEach(function (a,i) {
             a = a.split(";;;");
             var row = document.createElement("div");
-            counter++;
-            if ((counter % 2) == 0)
+            if (((i+1) % 2) == 0)
               row.setAttribute("class", "odd");
             row.innerHTML += "<div class=\"itemCointainer\"><div class=\"code\"><p>"
                     + a[0] + "</p></div><div class=\"name\"><p>"
