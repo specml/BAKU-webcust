@@ -746,11 +746,26 @@
                 window.scrollTo(coordinates.left, coordinates.top - 170);
               };
               img.onerror = function() {
-                document.getElementById("itemimg").innerHTML = "";
-                document.getElementById("itemimg").style.display = "none";
-                document.getElementById("tableContainer").style.marginBottom = "0";
-                var coordinates = getOffset(row);
-                window.scrollTo(coordinates.left, coordinates.top - 170);
+                var imgPng = new Image();
+                imgPng.src = "../" + $("#company option:selected").attr("sn") + "/" + artcode + ".png";
+                imgPng.onload = function(){
+                  var imgcontainer = document.getElementById("itemimg");
+                  imgcontainer.style.display = "block";
+                  imgcontainer.innerHTML = "";
+                  item = document.createElement("img");
+                  item.setAttribute("src", imgPng.src);
+                  imgcontainer.appendChild(item);
+                  document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
+                  var coordinates = getOffset(row);
+                  window.scrollTo(coordinates.left, coordinates.top - 170);
+                };
+                img.onerror = function() {
+                  document.getElementById("itemimg").innerHTML = "";
+                  document.getElementById("itemimg").style.display = "none";
+                  document.getElementById("tableContainer").style.marginBottom = "0";
+                  var coordinates = getOffset(row);
+                  window.scrollTo(coordinates.left, coordinates.top - 170);
+                }
               }
             } else {
               blinkError("ОШИБКА!!!<br/>Неправильный код товара!", 600);
