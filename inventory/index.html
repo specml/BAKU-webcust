@@ -466,9 +466,9 @@
           alert("Выберите компанию!");
           return false;
         }
-        var xhr = getXmlHttp();
-        xhr.open("POST", "../dologin", false);
-        xhr.setRequestHeader("Cache-Control", "max-age=0");
+        var request = getXmlHttp();
+        request.open("POST", "../dologin", false);
+        request.setRequestHeader("Cache-Control", "max-age=0");
         var aParams = new Array();
         for (var i = 0; i < document.forms[0].elements.length; i++) {
           var sParam = encodeURIComponent(document.forms[0].elements[i].name);
@@ -476,8 +476,8 @@
           sParam += encodeURIComponent(document.forms[0].elements[i].value);
           aParams.push(sParam);
         }
-        xhr.send(aParams.join("&") + "&name=" + encodeURIComponent("Log In"));
-        if (xhr.responseText != "") {
+        request.send(aParams.join("&") + "&name=" + encodeURIComponent("Log In"));
+        if (request.status == 200 && request.responseText != "") {
           var tstr;
           tstr = "?comp=" + $("#company").val();
           if ((getParameterByName("comp")==$("#company").val()) && (getParameterByName("st")))
@@ -629,9 +629,9 @@
         document.getElementById("page").style.display = "none";
         document.getElementById("nostvcnr").style.display = "none";
         document.getElementById("inventoryChngCancel").style.display = "none";
-        var xhr = getXmlHttp();
-        xhr.open("POST", "../WebDoLogout.hal", false);
-        xhr.send();
+        var request = getXmlHttp();
+        request.open("POST", "../WebDoLogout.hal", false);
+        request.send();
         if (f === false) {
           $("h2").text("Неправильный логин или пароль!");
         } else {
@@ -695,16 +695,16 @@
               artcode = x;
               qty = 1;
             }
-            var xhr = getXmlHttp();
-            xhr.open("GET", "../WebFindItemST.hal?p1=" + document.getElementById("inventory_p_p").innerHTML + "&p2=" + artcode + "&p3=" + qty + "&comp=" + getParameterByName("comp"), false);
-            xhr.send();
-            if (xhr.responseText) {
-              if (xhr.responseText=="oked"){
+            var request = getXmlHttp();
+            request.open("GET", "../WebFindItemST.hal?p1=" + document.getElementById("inventory_p_p").innerHTML + "&p2=" + artcode + "&p3=" + qty + "&comp=" + getParameterByName("comp"), false);
+            request.send();
+            if (request.status == 200 && request.responseText != "") {
+              if (request.responseText=="oked"){
                 blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!<br/>Обновите страницу.", 600);
                 beepError();
                 return;
               }
-              artcode = xhr.responseText.split("\r\n");
+              artcode = request.responseText.split("\r\n");
               var name = artcode[1];
               qty = ((parseInt(artcode[3])) ? (parseInt(artcode[3])) : 0);
               var instock = ((parseInt(artcode[2])) ? (parseInt(artcode[2])) : 0);
@@ -733,38 +733,30 @@
                 container.appendChild(row);
               }
               var img = new Image();
-              img.src = "../" + $("#company option:selected").attr("sn") + "/" + artcode + ".jpg";
-              img.onload = function(){
-                var imgcontainer = document.getElementById("itemimg");
-                imgcontainer.style.display = "block";
-                imgcontainer.innerHTML = "";
-                item = document.createElement("img");
-                item.setAttribute("src", img.src);
-                imgcontainer.appendChild(item);
-                document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
-                var coordinates = getOffset(row);
-                window.scrollTo(coordinates.left, coordinates.top - 170);
-              };
-              img.onerror = function() {
-                var imgPng = new Image();
-                imgPng.src = "../" + $("#company option:selected").attr("sn") + "/" + artcode + ".png";
-                imgPng.onload = function(){
-                  var imgcontainer = document.getElementById("itemimg");
-                  imgcontainer.style.display = "block";
-                  imgcontainer.innerHTML = "";
-                  item = document.createElement("img");
-                  item.setAttribute("src", imgPng.src);
-                  imgcontainer.appendChild(item);
-                  document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
-                  var coordinates = getOffset(row);
-                  window.scrollTo(coordinates.left, coordinates.top - 170);
-                };
-                img.onerror = function() {
-                  document.getElementById("itemimg").innerHTML = "";
-                  document.getElementById("itemimg").style.display = "none";
-                  document.getElementById("tableContainer").style.marginBottom = "0";
-                  var coordinates = getOffset(row);
-                  window.scrollTo(coordinates.left, coordinates.top - 170);
+              var request2 = getXmlHttp();
+              request2.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
+              request2.send();
+              if (request2.status == 200 && request2.responseText != "") {
+                if (request2.responseText!="noimg") {
+                  img.src = "../" + $("#company option:selected").attr("sn") + "/" + request2.responseText;
+                  img.onload = function(){
+                    var imgcontainer = document.getElementById("itemimg");
+                    imgcontainer.style.display = "block";
+                    imgcontainer.innerHTML = "";
+                    item = document.createElement("img");
+                    item.setAttribute("src", img.src);
+                    imgcontainer.appendChild(item);
+                    document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
+                    var coordinates = getOffset(row);
+                    window.scrollTo(coordinates.left, coordinates.top - 170);
+                  };
+                  img.onerror = function() {
+                    document.getElementById("itemimg").innerHTML = "";
+                    document.getElementById("itemimg").style.display = "none";
+                    document.getElementById("tableContainer").style.marginBottom = "0";
+                    var coordinates = getOffset(row);
+                    window.scrollTo(coordinates.left, coordinates.top - 170);
+                  }
                 }
               }
             } else {
