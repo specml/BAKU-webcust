@@ -801,9 +801,13 @@
       }
       function okFlagClick() {
         var request = getXmlHttp();
-        request.open("GET", "../WebChangeStockTakeVc.hal?p1=" + getParameterByName("st") + "&p2=" + ((this.checked)?"1":"0") + "&comp=" + getParameterByName("comp"), false);
+        var flag = ((this.checked)?"1":"0");
+        request.open("GET", "../WebChangeStockTakeVc.hal?p1=" + getParameterByName("st") + "&p2=" + flag + "&comp=" + getParameterByName("comp"), false);
         request.send(null);
-        return;
+        if (request.status == 200 && request.responseText == flag)
+          return true;
+        alert("Ошибка при изменении статуса \"ОК\".");
+        return false;
       }
 
       function drawTable(param) {
