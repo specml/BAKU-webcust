@@ -677,7 +677,8 @@
             return false;
           }
           var x = document.getElementById("artCode").value;
-          if (x.substring(0, 2) == "ST") {
+          //if (x.substring(0, 2) == "ST") {
+          if (false) {
             location.search = "?comp=" + $("#company").val() + "&st=" + x.substring(2, x.length);
           } else {
             var artcode,qty;
