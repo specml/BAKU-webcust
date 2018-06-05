@@ -251,7 +251,7 @@
         display: none;
         position: relative;
       }
-      .popup a.close {
+      a.close {
         width: 70px;
         height: 70px;
         display: block;
@@ -266,7 +266,7 @@
         background-size: cover;
         opacity: 0.3;
       }
-      .popup a.close:hover {
+      a.close:hover {
         opacity: 0.5;
       }
       #changeparam {
@@ -410,6 +410,48 @@
         height: 10px;
         margin: 5px 0;
       }
+      #myImg {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+.modal a.close {
+  filter: invert(100%);
+  opacity: 0.6;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)}
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
     </style>
   </head>
   <body>
@@ -513,7 +555,10 @@
       <p>Параметры не указаны</p>
     </div>
     <div id="error"><p></p></div>
-
+    <div id="myModal" class="modal">
+      <a class="close" title="Закрыть" href="#">Закрыть</a>
+      <img class="modal-content" id="img01">
+    </div>
   </body>
   <script type="text/javascript" >
 
@@ -534,7 +579,6 @@
     function a_closeClick() {
       $(this).parent().fadeOut(300);
       $("#overlay").fadeOut(300);
-      document.getElementById("loginForm").reset();
       return false;
     }
     function loginFormSubmit() {
@@ -601,16 +645,6 @@
       }
       return r;
     }
-    $("a.close").click(function () {
-      $(this).parent().fadeOut(300);
-      $("#overlay").fadeOut(300);
-      return false;
-    });
-    $("a.closeSet").click(function () {
-      $(this).parent().fadeOut(300);
-      $("#overlaySet").fadeOut(300);
-      return false;
-    });
     function showLogin(f) {
       document.getElementById("noparam").style.display = "none";
       document.getElementById("page").style.display = "none";
@@ -826,6 +860,33 @@
     } else {
       showLogin(true);
     }
+
+    var modal = document.getElementById('myModal');
+    var img = document.getElementById('myImg');
+    var modalImg = document.getElementById("img01");
+    modal.onclick = function() {
+      $(this).fadeOut(300);
+      return false;
+    }
+    $(".itemCointainer").click(function(){
+      var artcode = this.childNodes[0].childNodes[0].innerHTML;
+      if (artcode=="Код товара") return;
+      //modal.style.display = "block";
+      var request = getXmlHttp();
+      request.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
+      request.send();
+      if (request.status==200 && request.responseText!="")
+        if (request.responseText!="noimg") {
+          modalImg.src = "../" + $("#company option:selected").attr("sn") + "/" + request.responseText;
+          modalImg.onload =  $(modal).fadeIn(300);
+        }
+    });
+
+    /*var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }*/
   </script>
 
 </html>
