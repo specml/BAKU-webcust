@@ -782,7 +782,8 @@ to {transform:scale(1)}
               request2.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
               request2.send();
               if (request2.status == 200 && request2.responseText != "") {
-                if (request2.responseText!="noimg") {
+                //if (request2.responseText!="noimg") {
+                if (false) {
                   img.src = "../" + $("#company option:selected").attr("sn") + "/" + request2.responseText;
                   img.onload = function(){
                     var imgcontainer = document.getElementById("itemimg");
@@ -793,21 +794,21 @@ to {transform:scale(1)}
                     imgcontainer.appendChild(item);
                     document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
                     var coordinates = getOffset(row);
-                    window.scrollTo(coordinates.left, coordinates.top - parseInt(window.getComputedStyle(document.getElementsByClassName("menu")[0],null).height) - 5);
+                    window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
                   };
                   img.onerror = function() {
                     document.getElementById("itemimg").innerHTML = "";
                     document.getElementById("itemimg").style.display = "none";
                     document.getElementById("tableContainer").style.marginBottom = "0";
                     var coordinates = getOffset(row);
-                    window.scrollTo(coordinates.left, coordinates.top - parseInt(window.getComputedStyle(document.getElementsByClassName("menu")[0],null).height) - 5);
+                    window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
                   }
                 } else {
                   document.getElementById("itemimg").innerHTML = "";
                   document.getElementById("itemimg").style.display = "none";
                   document.getElementById("tableContainer").style.marginBottom = "0";
                   var coordinates = getOffset(row);
-                  window.scrollTo(coordinates.left, coordinates.top - parseInt(window.getComputedStyle(document.getElementsByClassName("menu")[0],null).height) - 5);
+                  window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
                 }
               }
             } else {
@@ -971,7 +972,7 @@ to {transform:scale(1)}
           if (request.status==200 && request.responseText!="")
             if (request.responseText!="noimg") {
               modalImg.src = "../" + $("#company option:selected").attr("sn") + "/" + request.responseText;
-              modalImg.onload =  $(modal).fadeIn(300);
+              modalImg.onload = $(modal).fadeIn(300);
             }
         });
 
