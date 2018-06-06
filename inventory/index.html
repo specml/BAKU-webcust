@@ -275,7 +275,7 @@
     overflow: hidden;
     padding-top: 170px;
   }
-  .popup a#close, .menu a#inventoryChngCancel {
+  a.close, .menu a#inventoryChngCancel {
     width: 70px;
     height: 70px;
     display: block;
@@ -290,7 +290,7 @@
     background-size: cover;
     opacity: 0.3;
   }
-  .popup a#close:hover, .menu a#inventoryChngCancel:hover {
+  a.close:hover, .menu a#inventoryChngCancel:hover {
     opacity: 0.5;
   }
   .menu a#inventoryChngCancel {
@@ -389,6 +389,48 @@
   .highlighted {
     background-color: #ff7f50;
   }
+  #myImg {
+border-radius: 5px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+.modal {
+display: none;
+position: fixed;
+z-index: 10;
+padding-top: 100px;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgb(0,0,0);
+background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+margin: auto;
+display: block;
+width: 80%;
+max-width: 700px;
+}
+.modal a.close {
+filter: invert(100%);
+opacity: 0.6;
+}
+
+@-webkit-keyframes zoom {
+from {-webkit-transform:scale(0)}
+to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+from {transform:scale(0)}
+to {transform:scale(1)}
+}
 </style>
   <body>
     <div class="menu">
@@ -429,7 +471,7 @@
     </div>
     <div id="itemimg" style="display:none"></div>
     <div class="popup reg_form">
-      <a id="close" title="Закрыть" href="#">Закрыть</a>
+      <a id="close" class="close" title="Закрыть" href="#">Закрыть</a>
       <form id="loginForm" method="post">
         <label for="login">Логин:</label>
         <input type="text" name="login" />
@@ -453,7 +495,10 @@
       <p>Введите номер инвентаризации</p>
     </div>
     <div id="error"><p></p></div>
-
+    <div id="myModal" class="modal">
+      <a class="close" title="Закрыть" href="#">Закрыть</a>
+      <img class="modal-content" id="img01">
+    </div>
     <script type="text/javascript" >
       function a_closeClick() {
         $(this).parent().fadeOut(300);
@@ -675,7 +720,7 @@
             this.value = "";
             return false;
           }
-          var x = document.getElementById("artCode").value;
+          var x = this.value;
           //if (x.substring(0, 2) == "ST") {
           if (false) {
             location.search = "?comp=" + $("#company").val() + "&st=" + x.substring(2, x.length);
@@ -748,15 +793,21 @@
                     imgcontainer.appendChild(item);
                     document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
                     var coordinates = getOffset(row);
-                    window.scrollTo(coordinates.left, coordinates.top - 170);
+                    window.scrollTo(coordinates.left, coordinates.top - parseInt(window.getComputedStyle(document.getElementsByClassName("menu")[0],null).height) - 5);
                   };
                   img.onerror = function() {
                     document.getElementById("itemimg").innerHTML = "";
                     document.getElementById("itemimg").style.display = "none";
                     document.getElementById("tableContainer").style.marginBottom = "0";
                     var coordinates = getOffset(row);
-                    window.scrollTo(coordinates.left, coordinates.top - 170);
+                    window.scrollTo(coordinates.left, coordinates.top - parseInt(window.getComputedStyle(document.getElementsByClassName("menu")[0],null).height) - 5);
                   }
+                } else {
+                  document.getElementById("itemimg").innerHTML = "";
+                  document.getElementById("itemimg").style.display = "none";
+                  document.getElementById("tableContainer").style.marginBottom = "0";
+                  var coordinates = getOffset(row);
+                  window.scrollTo(coordinates.left, coordinates.top - parseInt(window.getComputedStyle(document.getElementsByClassName("menu")[0],null).height) - 5);
                 }
               }
             } else {
@@ -903,6 +954,26 @@
         drawTable(getParameterByName("st"));
       } else
         showLogin(true);
+        var modal = document.getElementById('myModal');
+        var img = document.getElementById('myImg');
+        var modalImg = document.getElementById("img01");
+        modal.onclick = function() {
+          $(this).fadeOut(300);
+          return false;
+        }
+        $(".itemCointainer").click(function(){
+          var artcode = this.childNodes[0].childNodes[0].innerHTML;
+          if (artcode=="Код товара") return;
+          //modal.style.display = "block";
+          var request = getXmlHttp();
+          request.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
+          request.send();
+          if (request.status==200 && request.responseText!="")
+            if (request.responseText!="noimg") {
+              modalImg.src = "../" + $("#company option:selected").attr("sn") + "/" + request.responseText;
+              modalImg.onload =  $(modal).fadeIn(300);
+            }
+        });
 
     </script>
   </body>
