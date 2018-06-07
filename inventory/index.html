@@ -6,432 +6,432 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   </head>
   <style type="text/css">
-  @import url('https://fonts.googleapis.com/css?family=PT+Serif');
-  * {
-    font-family: 'PT Serif', serif;
-    font-weight: 700;
-    z-index: 1;
-  }
-  html, body {
-    height: 100%;
-  }
-  body {
-    margin: 0;
-  }
-  p {
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    margin: 0;
-    padding: 0;
-  }
-  .dc-chart  {
-    display: inline-table;
-  }
-  .menu {
-    display: block;
-    background-color: #9F9F9F;
-    overflow: hidden;
-    padding-bottom: 15px;
-    text-shadow: 0 1px 1px black;
-    position: fixed;
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 2;
-    box-shadow: 5px 5px 5px #838383;
-    -moz-box-shadow: 5px 5px 5px #838383;
-    -webkit-box-shadow: 5px 5px 5px #838383;
-  }
-  .menu div {
-    margin: 0;
-    min-height: 65px;
-    padding: 5px 10px 0 10px;
-  }
-  .menu input[type=text] {
-    width: 170px;
-    font-size: 40px
-  }
-  .menu input[type=button] {
-    margin: 20px 120px 0 0;
-    padding: 1px 6px;
-    background-color:#cccccc;
-    border-width: 2px;
-    border-style: solid;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    font-weight: 700;
-    font-size: 33px;
-    cursor: pointer;
-    color:#000000;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-  .menu input[type=button]:hover {
-    color:#ffffff;
-  }
-  .menu input[type=image] {
-    float: right;
-    height: 50px;
-    width: 50px;
-    opacity: 0.5;
-    margin: 13px 13px 0px 0px;
-  }
-  .menu input[type=image]:hover {
-    opacity: 1;
-  }
-  .menu input[type=checkbox] {
-    width: 40px;
-    height: 40px;
-    margin: 5px 15px 0 40px;
-  }
-  #rightMenuDiv {
-    max-width: none;
-    min-width: 40px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-  }
-  #leftMenuDiv {
-    overflow: hidden;
-  }
-  #leftMenuDiv label {
-    font-size: 35px;
-  }
-  .ef p {
-    display: inline-block;
-    margin: 0;
-    color: #000000;
-    font-size: 45px;
-    text-shadow: 0 1px 1px gray;
-    min-width: 375px;
-    text-align: left;
-  }
-  .ef p_p {
-    text-shadow: none;
-    text-align: left;
-    padding: 1px 6px;
-    background-color: #cccccc;
-    border-color: #eaeaea;
-    border-width: 2px;
-    border-style: solid;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    font-weight: 700;
-    font-size: 33px;
-    cursor: pointer;
-    color:#000000;
-    line-height: 52px;
-    min-width: 50px;
-    text-align: center;
-  }
-  div.ef {
-    min-width: 555px;
-    float: left;
-  }
-  div .ef * {
-    float:left;
-  }
-  #error {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: none;
-    background-color: #BF3030;
-    background-color: rgba(191,48,48,1);
-    color: white;
-    opacity: 0.95;
-    z-index: 3;
-  }
-  #error p {
-    margin: 0 100px;
-    font-size: 70px;
-    text-align: center;
-    position: relative;
-    height: 40%;
-    top: 30%;
-  }
-  .popup {
-    position: fixed;
-    top: 100px;
-    left: 50%;
-    display: none;
-    overflow: hidden;
-    background-color: #ffffff;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-    z-index: 4;
-    behavior: url(PIE.htc);
-  }
-  .popup h2 {
-    margin: 30px 30px;
-    font-size: 60px;
-    font-weight: 700;
-    opacity: 0.6;
-  }
-  .reg_form {
-    margin-left:-400px;
-    width: 800px;
-  }
-  .reg_form form {
-    margin-top: 20px;
-    overflow: hidden;
-  }
-  .reg_form label {
-    margin: 15px 30px 0 30px;
-    width: 200px;
-    height: 70px;
-    font-size: 45px;
-    display: inline-block;
-    vertical-align: top;
-  }
-  .reg_form input[type=text], .reg_form input[type=password], .reg_form select {
-    margin: 25px 40px 0 0;
-    padding: 0 6px;
-    width: 400px;
-    height: 44px;
-    font-weight: 400;
-    font-size: 32px;
-    border: 2px solid #ccc;
-    box-sizing: border-box;
-  }
-  .reg_form input[type=text] {
-    text-transform:uppercase;
-  }
-  .reg_form input[type=submit] {
-    margin: 15px 30px 30px 0px;
-    padding:3px 10px;
-    float: right;
-    background-color: #cccccc;
-    border-width: 2px;
-    border-style: solid;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    font-weight: 700;
-    font-size: 35px;
-    cursor: pointer;
-    color: #000000;
-    display: inline-block;
-  }
-  .reg_form input[type=submit] {
-    margin-bottom: 0;
-  }
-  .reg_form input[type=submit]:hover {
-    color:#f0f0f0;
-  }
-  #overlay {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: none;
-    background-color: #000000;
-    opacity: 0.8;
-    z-index: 3;
-  }
+    @import url('https://fonts.googleapis.com/css?family=PT+Serif');
+    * {
+      font-family: 'PT Serif', serif;
+      font-weight: 700;
+      z-index: 1;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+    }
+    p {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      padding: 0;
+    }
+    .dc-chart  {
+      display: inline-table;
+    }
+    .menu {
+      display: block;
+      background-color: #9F9F9F;
+      overflow: hidden;
+      padding-bottom: 15px;
+      text-shadow: 0 1px 1px black;
+      position: fixed;
+      width: 100%;
+      box-sizing: border-box;
+      z-index: 2;
+      box-shadow: 5px 5px 5px #838383;
+      -moz-box-shadow: 5px 5px 5px #838383;
+      -webkit-box-shadow: 5px 5px 5px #838383;
+    }
+    .menu div {
+      margin: 0;
+      min-height: 65px;
+      padding: 5px 10px 0 10px;
+    }
+    .menu input[type=text] {
+      width: 170px;
+      font-size: 40px
+    }
+    .menu input[type=button] {
+      margin: 20px 120px 0 0;
+      padding: 1px 6px;
+      background-color:#cccccc;
+      border-width: 2px;
+      border-style: solid;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 33px;
+      cursor: pointer;
+      color:#000000;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .menu input[type=button]:hover {
+      color:#ffffff;
+    }
+    .menu input[type=image] {
+      float: right;
+      height: 50px;
+      width: 50px;
+      opacity: 0.5;
+      margin: 13px 13px 0px 0px;
+    }
+    .menu input[type=image]:hover {
+      opacity: 1;
+    }
+    .menu input[type=checkbox] {
+      width: 40px;
+      height: 40px;
+      margin: 5px 15px 0 40px;
+    }
+    #rightMenuDiv {
+      max-width: none;
+      min-width: 40px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+    #leftMenuDiv {
+      overflow: hidden;
+    }
+    #leftMenuDiv label {
+      font-size: 35px;
+    }
+    .ef p {
+      display: inline-block;
+      margin: 0;
+      color: #000000;
+      font-size: 45px;
+      text-shadow: 0 1px 1px gray;
+      min-width: 375px;
+      text-align: left;
+    }
+    .ef p_p {
+      text-shadow: none;
+      text-align: left;
+      padding: 1px 6px;
+      background-color: #cccccc;
+      border-color: #eaeaea;
+      border-width: 2px;
+      border-style: solid;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 33px;
+      cursor: pointer;
+      color:#000000;
+      line-height: 52px;
+      min-width: 50px;
+      text-align: center;
+    }
+    div.ef {
+      min-width: 555px;
+      float: left;
+    }
+    div .ef * {
+      float:left;
+    }
+    #error {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: none;
+      background-color: #BF3030;
+      background-color: rgba(191,48,48,1);
+      color: white;
+      opacity: 0.95;
+      z-index: 3;
+    }
+    #error p {
+      margin: 0 100px;
+      font-size: 70px;
+      text-align: center;
+      position: relative;
+      height: 40%;
+      top: 30%;
+    }
+    .popup {
+      position: fixed;
+      top: 100px;
+      left: 50%;
+      display: none;
+      overflow: hidden;
+      background-color: #ffffff;
+      -moz-border-radius: 15px;
+      -webkit-border-radius: 15px;
+      border-radius: 15px;
+      z-index: 4;
+      behavior: url(PIE.htc);
+    }
+    .popup h2 {
+      margin: 30px 30px;
+      font-size: 60px;
+      font-weight: 700;
+      opacity: 0.6;
+    }
+    .reg_form {
+      margin-left:-400px;
+      width: 800px;
+    }
+    .reg_form form {
+      margin-top: 20px;
+      overflow: hidden;
+    }
+    .reg_form label {
+      margin: 15px 30px 0 30px;
+      width: 200px;
+      height: 70px;
+      font-size: 45px;
+      display: inline-block;
+      vertical-align: top;
+    }
+    .reg_form input[type=text], .reg_form input[type=password], .reg_form select {
+      margin: 25px 40px 0 0;
+      padding: 0 6px;
+      width: 400px;
+      height: 44px;
+      font-weight: 400;
+      font-size: 32px;
+      border: 2px solid #ccc;
+      box-sizing: border-box;
+    }
+    .reg_form input[type=text] {
+      text-transform:uppercase;
+    }
+    .reg_form input[type=submit] {
+      margin: 15px 30px 30px 0px;
+      padding:3px 10px;
+      float: right;
+      background-color: #cccccc;
+      border-width: 2px;
+      border-style: solid;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 35px;
+      cursor: pointer;
+      color: #000000;
+      display: inline-block;
+    }
+    .reg_form input[type=submit] {
+      margin-bottom: 0;
+    }
+    .reg_form input[type=submit]:hover {
+      color:#f0f0f0;
+    }
+    #overlay {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: none;
+      background-color: #000000;
+      opacity: 0.8;
+      z-index: 3;
+    }
 
-  #inventoryInfo {
-    height: 40px;
-    float: right;
-    width: 200px;
-    position: relative;
-  }
-  #inventoryInfo p {
-    font-style: italic;
-    font-size: 31px;
-    position: absolute;
-    right: 0;
-    margin: 10px 20px 0 0;
-    opacity: 0.7;
-    white-space: nowrap;
-  }
-  #inventory_p p_p:hover {
-    cursor: pointer;
-    color:#ffffff;
-  }
-  #notlogined, #nostvcnr {
-    margin-top: 400px;
-    width:100%;
-    height:100%;
-    position:fixed;
-    top:0;
-    left:0;
-    display: block;
-  }
-  #notlogined p, #nostvcnr p {
-    line-height: 1;
-    font-size: 50px;
-    color: #d6d6d6;
-    color: rgba(51, 51, 51, 0.2);
-  }
-  #page {
-    overflow: hidden;
-    padding-top: 170px;
-  }
-  a.close, .menu a#inventoryChngCancel {
-    width: 70px;
-    height: 70px;
-    display: block;
-    text-indent: -9999px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: url(./img/close.png) no-repeat;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    opacity: 0.3;
-  }
-  a.close:hover, .menu a#inventoryChngCancel:hover {
-    opacity: 0.5;
-  }
-  .menu a#inventoryChngCancel {
-    position: static;
-    margin-top: -5px;
-  }
-  #itemimg {
-    height: 35%;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    background-color: #fff;
-  }
-  #itemimg img {
-    height: 100%;
-    display: block;
-    margin: 0 auto;
-  }
-  #itemimg span {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin: -50% 0 0 0;
-  }
-  #tableContainer {
-    width: calc(100% - 6px);
-    margin: 0 3px;
-  }
-  #tableContainer p, .tableHeader p {
-    font-size: 40px;
-    word-wrap: break-word;
-  }
-  .itemCointainer {
-    border: #faebd7 4px solid;
-    box-sizing: border-box;
-    display: table-cell;
-  }
-  .itemCointainer .code {
-    background-color: #ffc77c;
-  }
-  .itemCointainer .name {
-  }
-  .qtyContainer {
-    width: 18%;
-    border: #faebd7 4px solid;
-    box-sizing: border-box;
-    display: table-cell;
-    position: relative;
-  }
-  .qtyContainer .difference {
-    background-color: #ffc77c;
-  }
-  .qtyContainer .heightholder {
-    height: 100%;
-    width: 0;
-    float: left;
-    color: transparent;
-  }
-  .tableHeader {
-    background-color: #eaeaea;
-    display: table;
-    border: solid 5px #9f9f9f;
-    box-sizing: border-box;
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  #tableContainer .itemCointainer .code {
-    background-color: #faebd7;
-  }
-  #tableContainer .qtyContainer .difference {
-    background-color: #faebd7;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-  #tableContainer>div {
-    width: 100%;
-    display: table;
-    margin-bottom: 10px;
-  }
-  #tableContainer>div.odd {
-    background-color: #eaeaea;
-  }
-  #tableContainer .odd .itemCointainer .code {
-    background-color: #e4d8c8;
-  }
-  #tableContainer .odd .itemCointainer {
-    border-color: #e4d8c8;
-  }
-  #tableContainer .odd .qtyContainer .difference {
-    background-color: #e4d8c8;
-  }
-  #tableContainer .odd .qtyContainer {
-    border-color: #e4d8c8;
-  }
-  .highlighted {
-    background-color: #ff7f50;
-  }
-  #myImg {
-border-radius: 5px;
-cursor: pointer;
-transition: 0.3s;
-}
+    #inventoryInfo {
+      height: 40px;
+      float: right;
+      width: 200px;
+      position: relative;
+    }
+    #inventoryInfo p {
+      font-style: italic;
+      font-size: 31px;
+      position: absolute;
+      right: 0;
+      margin: 10px 20px 0 0;
+      opacity: 0.7;
+      white-space: nowrap;
+    }
+    #inventory_p p_p:hover {
+      cursor: pointer;
+      color:#ffffff;
+    }
+    #notlogined, #nostvcnr {
+      margin-top: 400px;
+      width:100%;
+      height:100%;
+      position:fixed;
+      top:0;
+      left:0;
+      display: block;
+    }
+    #notlogined p, #nostvcnr p {
+      line-height: 1;
+      font-size: 50px;
+      color: #d6d6d6;
+      color: rgba(51, 51, 51, 0.2);
+    }
+    #page {
+      overflow: hidden;
+      padding-top: 170px;
+    }
+    a.close, .menu a#inventoryChngCancel {
+      width: 70px;
+      height: 70px;
+      display: block;
+      text-indent: -9999px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: url(./img/close.png) no-repeat;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      opacity: 0.3;
+    }
+    a.close:hover, .menu a#inventoryChngCancel:hover {
+      opacity: 0.5;
+    }
+    .menu a#inventoryChngCancel {
+      position: static;
+      margin-top: -5px;
+    }
+    #itemimg {
+      height: 35%;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      background-color: #fff;
+    }
+    #itemimg img {
+      height: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+    #itemimg span {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      margin: -50% 0 0 0;
+    }
+    #tableContainer {
+      width: calc(100% - 6px);
+      margin: 0 3px;
+    }
+    #tableContainer p, .tableHeader p {
+      font-size: 40px;
+      word-wrap: break-word;
+    }
+    .itemCointainer {
+      border: #faebd7 4px solid;
+      box-sizing: border-box;
+      display: table-cell;
+    }
+    .itemCointainer .code {
+      background-color: #ffc77c;
+    }
+    .itemCointainer .name {
+    }
+    .qtyContainer {
+      width: 18%;
+      border: #faebd7 4px solid;
+      box-sizing: border-box;
+      display: table-cell;
+      position: relative;
+    }
+    .qtyContainer .difference {
+      background-color: #ffc77c;
+    }
+    .qtyContainer .heightholder {
+      height: 100%;
+      width: 0;
+      float: left;
+      color: transparent;
+    }
+    .tableHeader {
+      background-color: #eaeaea;
+      display: table;
+      border: solid 5px #9f9f9f;
+      box-sizing: border-box;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    #tableContainer .itemCointainer .code {
+      background-color: #faebd7;
+    }
+    #tableContainer .qtyContainer .difference {
+      background-color: #faebd7;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    #tableContainer>div {
+      width: 100%;
+      display: table;
+      margin-bottom: 10px;
+    }
+    #tableContainer>div.odd {
+      background-color: #eaeaea;
+    }
+    #tableContainer .odd .itemCointainer .code {
+      background-color: #e4d8c8;
+    }
+    #tableContainer .odd .itemCointainer {
+      border-color: #e4d8c8;
+    }
+    #tableContainer .odd .qtyContainer .difference {
+      background-color: #e4d8c8;
+    }
+    #tableContainer .odd .qtyContainer {
+      border-color: #e4d8c8;
+    }
+    .highlighted {
+      background-color: #ff7f50;
+    }
+    #myImg {
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-#myImg:hover {opacity: 0.7;}
+    #myImg:hover {opacity: 0.7;}
 
-.modal {
-display: none;
-position: fixed;
-z-index: 10;
-padding-top: 100px;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-overflow: auto;
-background-color: rgb(0,0,0);
-background-color: rgba(0,0,0,0.9);
-}
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      padding-top: 100px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.9);
+    }
 
-.modal-content {
-margin: auto;
-display: block;
-width: 80%;
-max-width: 700px;
-}
-.modal a.close {
-filter: invert(100%);
-opacity: 0.6;
-}
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+    }
+    .modal a.close {
+      filter: invert(100%);
+      opacity: 0.6;
+    }
 
-@-webkit-keyframes zoom {
-from {-webkit-transform:scale(0)}
-to {-webkit-transform:scale(1)}
-}
+    @-webkit-keyframes zoom {
+      from {-webkit-transform:scale(0)}
+      to {-webkit-transform:scale(1)}
+    }
 
-@keyframes zoom {
-from {transform:scale(0)}
-to {transform:scale(1)}
-}
-</style>
+    @keyframes zoom {
+      from {transform:scale(0)}
+      to {transform:scale(1)}
+    }
+  </style>
   <body>
     <div class="menu">
       <div id="leftMenuDiv">
@@ -524,8 +524,8 @@ to {transform:scale(1)}
         if (request.status == 200 && request.responseText != "") {
           var tstr;
           tstr = "?comp=" + $("#company").val();
-          if ((getParameterByName("comp")==$("#company").val()) && (getParameterByName("st")))
-           tstr += ("&st=" + getParameterByName("st"));
+          if ((getParameterByName("comp") == $("#company").val()) && (getParameterByName("st")))
+            tstr += ("&st=" + getParameterByName("st"));
           location.search = tstr;
         } else {
           showLogin(false);
@@ -539,9 +539,6 @@ to {transform:scale(1)}
       function beepError() {
         $('<audio id="beepError"><source src="sound/error.mp3" type="audio/mpeg"></audio>').appendTo('body');
         $('#beepError')[0].play();
-      }
-      function beepBell() {
-        //$('#beepBell')[0].play();
       }
       function getXmlHttp() {
         var r;
@@ -574,14 +571,14 @@ to {transform:scale(1)}
       function styleByDevice(style, mStyle) {
         var d = Date.now();
         if (navigator.userAgent.match(/Android/i) ||
-         navigator.userAgent.match(/webOS/i) ||
-         navigator.userAgent.match(/iPhone/i) ||
-         navigator.userAgent.match(/iPad/i) ||
-         navigator.userAgent.match(/iPod/i) ||
-         navigator.userAgent.match(/BlackBerry/i) ||
-         navigator.userAgent.match(/Windows Phone/i) ||
-         (getParameterByName('mob')) ||
-         (true)) {
+                navigator.userAgent.match(/webOS/i) ||
+                navigator.userAgent.match(/iPhone/i) ||
+                navigator.userAgent.match(/iPad/i) ||
+                navigator.userAgent.match(/iPod/i) ||
+                navigator.userAgent.match(/BlackBerry/i) ||
+                navigator.userAgent.match(/Windows Phone/i) ||
+                (getParameterByName('mob')) ||
+                (true)) {
           document.getElementById("pageStyle").href = mStyle + "?" + d;
           if (navigator.userAgent.match(/iPhone/i) ||
                   navigator.userAgent.match(/iPad/i) ||
@@ -662,12 +659,6 @@ to {transform:scale(1)}
           return {top: top, left: left}
         }
       }
-      function blinkError(text, delay) {
-        document.getElementById("error").childNodes[0].innerHTML = text;
-        document.getElementById("error").style.backgroundColor  = "";
-        $("#error").fadeIn(delay);
-        setTimeout('$("#error").fadeOut(' + delay + ');', 1000 + delay);
-      }
       function showLogin(f) {
         document.getElementById("notlogined").style.display = "block";
         document.getElementById("page").style.display = "none";
@@ -686,7 +677,7 @@ to {transform:scale(1)}
       }
       function blinkError(text, delay) {
         document.getElementById("error").childNodes[0].innerHTML = text;
-        document.getElementById("error").style.backgroundColor  = "";
+        document.getElementById("error").style.backgroundColor = "";
         $("#error").fadeIn(delay);
         setTimeout('$("#error").fadeOut(' + delay + ');', 1000 + delay);
       }
@@ -714,27 +705,40 @@ to {transform:scale(1)}
         if (!e)
           e = window.event;
         if (e.keyCode == "13") {
-          if (document.getElementById("okFlag").checked) {
-            blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!", 700);
-            beepError();
-            this.value = "";
-            return false;
-          }
           var x = this.value;
-          //if (x.substring(0, 2) == "ST") {
-          if (false) {
-            location.search = "?comp=" + $("#company").val() + "&st=" + x.substring(2, x.length);
+          if (!x)
+            return;
+          var requestli = getXmlHttp();
+          requestli.open("GET", "../WebMyLogIn.hal", false);
+          requestli.send(null);
+          if (requestli.status == 200 && requestli.responseText != "") {
+            if (!($("#company").val()))
+              $("#company").val(requestli.responseText.split(",")[1]);
           } else {
-            var artcode,qty;
+            showLogin(true);
+            this.value = "";
+            return;
+          }
+          if (x.substring(0, 9) == "StockTake") {
+            location.search = "?comp=" + $("#company").val() + "&st=" + x.substring(9, x.length);
+          } else {
+            if (document.getElementById("okFlag").checked) {
+              blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!", 700);
+              beepError();
+              this.value = "";
+              return;
+            }
+            var artcode, qty;
             if (parseInt(x) < 1000 && x.length < 4) {
               var elem = document.getElementsByClassName("highlighted")[0];
               if (elem) {
                 qty = parseInt(x);
                 artcode = elem.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[0].innerHTML;
-
               } else {
                 blinkError("ОШИБКА!!!<br/>Сначала введите код товара!", 700);
                 beepError();
+                this.value = "";
+                return;
               }
             } else {
               artcode = x;
@@ -744,9 +748,15 @@ to {transform:scale(1)}
             request.open("GET", "../WebFindItemST.hal?p1=" + document.getElementById("inventory_p_p").innerHTML + "&p2=" + artcode + "&p3=" + qty + "&comp=" + getParameterByName("comp"), false);
             request.send();
             if (request.status == 200 && request.responseText != "") {
-              if (request.responseText=="oked"){
+              if (request.responseText == "oked") {
                 blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!<br/>Обновите страницу.", 600);
                 beepError();
+                this.value = "";
+                return;
+              }
+              if (request.responseText == "blankartcode") {
+                alert("Ошибка при передаче запроса на сервер.\rПопробуйте отсканировать товар еще раз.");
+                this.value = "";
                 return;
               }
               artcode = request.responseText.split("\r\n");
@@ -758,23 +768,26 @@ to {transform:scale(1)}
               var row;
               if (p) {
                 row = p.parentNode.parentNode.parentNode;
+                if (qty == 0)
+                  console.log("must be deleted");
                 row.childNodes[1].childNodes[2].childNodes[0].innerHTML = qty;
                 row.childNodes[1].childNodes[3].childNodes[0].innerHTML = qty - instock;
                 if (document.getElementsByClassName("highlighted")[0])
                   document.getElementsByClassName("highlighted")[0].removeAttribute("class");
-                row.childNodes[1].childNodes[2].setAttribute("class","highlighted");
+                row.childNodes[1].childNodes[2].setAttribute("class", "highlighted");
               } else {
                 var container = document.getElementById("tableContainer");
                 row = document.createElement("div");
-                if (((container.childNodes.length+1) % 2) == 0) row.setAttribute("class", "odd");
+                if (((container.childNodes.length + 1) % 2) == 0)
+                  row.setAttribute("class", "odd");
                 if (document.getElementsByClassName("highlighted")[0])
-                document.getElementsByClassName("highlighted")[0].removeAttribute("class");
+                  document.getElementsByClassName("highlighted")[0].removeAttribute("class");
                 row.innerHTML = "<div class=\"itemCointainer\"><div class=\"code\"><p>" +
-                artcode + "</p></div><div class=\"name\"><p>" +
-                name + "</p></div></div><div class=\"qtyContainer\"><div class=\"heightholder\"><p>.</p><p>.</p><p>.</p></div><div><p>" +
-                instock + "</p></div><div class=\"highlighted\"><p>" +
-                qty + "</p></div><div class=\"difference\"><p>" +
-                (qty - instock) + "</p></div></div>";
+                        artcode + "</p></div><div class=\"name\"><p>" +
+                        name + "</p></div></div><div class=\"qtyContainer\"><div class=\"heightholder\"><p>.</p><p>.</p><p>.</p></div><div><p>" +
+                        instock + "</p></div><div class=\"highlighted\"><p>" +
+                        qty + "</p></div><div class=\"difference\"><p>" +
+                        (qty - instock) + "</p></div></div>";
                 container.appendChild(row);
               }
               var img = new Image();
@@ -785,7 +798,7 @@ to {transform:scale(1)}
                 //if (request2.responseText!="noimg") {
                 if (false) {
                   img.src = "../" + $("#company option:selected").attr("sn") + "/" + request2.responseText;
-                  img.onload = function(){
+                  img.onload = function () {
                     var imgcontainer = document.getElementById("itemimg");
                     imgcontainer.style.display = "block";
                     imgcontainer.innerHTML = "";
@@ -796,7 +809,7 @@ to {transform:scale(1)}
                     var coordinates = getOffset(row);
                     window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
                   };
-                  img.onerror = function() {
+                  img.onerror = function () {
                     document.getElementById("itemimg").innerHTML = "";
                     document.getElementById("itemimg").style.display = "none";
                     document.getElementById("tableContainer").style.marginBottom = "0";
@@ -852,8 +865,18 @@ to {transform:scale(1)}
         return false;
       }
       function okFlagClick() {
+        var requestli = getXmlHttp();
+        requestli.open("GET", "../WebMyLogIn.hal", false);
+        requestli.send(null);
+        if (requestli.status == 200 && requestli.responseText != "") {
+          if (!($("#company").val()))
+            $("#company").val(requestli.responseText.split(",")[1]);
+        } else {
+          showLogin(true);
+          return false;
+        }
         var request = getXmlHttp();
-        var flag = ((this.checked)?"1":"0");
+        var flag = ((this.checked) ? "1" : "0");
         request.open("GET", "../WebChangeStockTakeVc.hal?p1=" + getParameterByName("st") + "&p2=" + flag + "&comp=" + getParameterByName("comp"), false);
         request.send(null);
         if (request.status == 200 && request.responseText == flag)
@@ -904,21 +927,22 @@ to {transform:scale(1)}
                 var rawArr = request.responseText.split("\r\n");
                 var container = document.getElementById("tableContainer");
                 container.innerHTML = "";
-                rawArr.forEach(function(a,i) {
+                rawArr.forEach(function (a, i) {
                   a = a.split(";;;");
-                  if (a.length>2) {
+                  if (a.length > 2) {
                     var row = document.createElement("div");
-                    if (((i+1) % 2) == 0) row.setAttribute("class", "odd");
+                    if (((i + 1) % 2) == 0)
+                      row.setAttribute("class", "odd");
                     row.innerHTML = "<div class=\"itemCointainer\"><div class=\"code\"><p>" +
-                    a[0] + "</p></div><div class=\"name\"><p>" +
-                    a[1] + "</p></div></div><div class=\"qtyContainer\"><div class=\"heightholder\"><p>.</p><p>.</p><p>.</p></div><div><p>" +
-                    ((parseInt(a[2])) ? (parseInt(a[2])) : 0)  + "</p></div><div><p>" +
-                    ((parseInt(a[3])) ? (parseInt(a[3])) : 0) + "</p></div><div class=\"difference\"><p>" +
-                    (a[3] - a[2]) + "</p></div></div>";
+                            a[0] + "</p></div><div class=\"name\"><p>" +
+                            a[1] + "</p></div></div><div class=\"qtyContainer\"><div class=\"heightholder\"><p>.</p><p>.</p><p>.</p></div><div><p>" +
+                            ((parseInt(a[2])) ? (parseInt(a[2])) : 0) + "</p></div><div><p>" +
+                            ((parseInt(a[3])) ? (parseInt(a[3])) : 0) + "</p></div><div class=\"difference\"><p>" +
+                            (a[3] - a[2]) + "</p></div></div>";
                     container.appendChild(row);
                   } else {
                     document.getElementById("inventoryInfo").innerHTML = "<p>Склад: " + a[0] + "</p>";
-                    document.getElementById("okFlag").checked = (a[1]==1);
+                    document.getElementById("okFlag").checked = (a[1] == 1);
                   }
                 });
             }
@@ -943,7 +967,7 @@ to {transform:scale(1)}
       document.getElementById("loginbtn").onclick = showLogin;
       document.getElementById("okFlag").onclick = okFlagClick;
       loadCompanies(true);
-      $(document).ready(function(){
+      $(document).ready(function () {
         $(this).scrollTop(0);
       });
       var requestli = getXmlHttp();
@@ -953,29 +977,60 @@ to {transform:scale(1)}
         if (!($("#company").val()))
           $("#company").val(requestli.responseText.split(",")[1]);
         drawTable(getParameterByName("st"));
-      } else
+      } else {
         showLogin(true);
-        var modal = document.getElementById('myModal');
-        var img = document.getElementById('myImg');
-        var modalImg = document.getElementById("img01");
-        modal.onclick = function() {
-          $(this).fadeOut(300);
-          return false;
-        }
-        $(".itemCointainer").click(function(){
-          var artcode = this.childNodes[0].childNodes[0].innerHTML;
-          if (artcode=="Код товара") return;
-          //modal.style.display = "block";
-          var request = getXmlHttp();
-          request.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
-          request.send();
-          if (request.status==200 && request.responseText!="")
-            if (request.responseText!="noimg") {
-              modalImg.src = "../" + $("#company option:selected").attr("sn") + "/" + request.responseText;
-              modalImg.onload = $(modal).fadeIn(300);
-            }
-        });
+      }
+      var modal = document.getElementById('myModal');
+      var img = document.getElementById('myImg');
+      var modalImg = document.getElementById("img01");
+      modal.onclick = function () {
+        $(this).fadeOut(300);
+        return false;
+      }
+      $(".itemCointainer").click(function () {
+        var artcode = this.childNodes[0].childNodes[0].innerHTML;
+        if (artcode == "Код товара")
+          return;
+        //modal.style.display = "block";
+        var request = getXmlHttp();
+        request.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
+        request.send();
+        if (request.status == 200 && request.responseText != "")
+          if (request.responseText != "noimg") {
+            modalImg.src = "../" + $("#company option:selected").attr("sn") + "/" + request.responseText;
+            modalImg.onload = $(modal).fadeIn(300);
+          }
+      });
 
+
+      /*var onlongtouch;
+      var timer, lockTimer;
+
+      function touchstart(e) {
+        if (lockTimer) {
+          return;
+        }
+        timer = setTimeout(onlongtouch, 800);
+        lockTimer = true;
+      }
+
+      function touchend() {
+        //e.preventDefault();
+      	//stops short touches from firing the event
+        if (timer) {
+          clearTimeout(timer);
+          lockTimer = false;
+        }
+      }
+
+      onlongtouch = function () {
+        console.log('longtouch');
+      };
+
+      document.addEventListener("DOMContentLoaded", function (event) {
+        window.addEventListener("touchstart", touchstart, false);
+        window.addEventListener("touchend", touchend, false);
+      });*/
     </script>
   </body>
 
