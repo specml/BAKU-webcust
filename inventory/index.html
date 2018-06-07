@@ -740,10 +740,10 @@
               x = x.substring(1, x.length);
             }
             if (x.substring(0,1)=="+") x = x.substring(1, x.length);
-            if (parseInt(x) < 1000 && x.length < 5) {
+            if (parseInt(x) < 1000 && x.length < 4) {
               var elem = document.getElementsByClassName("highlighted")[0];
               if (elem) {
-                qty = parseInt(x);
+                qty = sign*parseInt(x);
                 artcode = elem.parentNode.parentNode.childNodes[0].childNodes[0].childNodes[0].innerHTML;
               } else {
                 blinkError("ОШИБКА!!!<br/>Сначала введите код товара!", 700);
