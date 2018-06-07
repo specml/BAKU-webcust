@@ -309,11 +309,10 @@
       display: block;
       margin: 0 auto;
     }
-    #itemimg span {
-      display: inline-block;
-      height: 100%;
+    #itemimg p {
+      font-size: 90px;
+      display: table-cell;
       vertical-align: middle;
-      margin: -50% 0 0 0;
     }
     #tableContainer {
       width: calc(100% - 6px);
@@ -449,6 +448,10 @@
           <p>Код товара:</p>
           <input autofocus type="text" id="artCode">
         </div>
+        <div class="ef" style="display:none;">
+          <p>Количество:</p>
+          <input disabled="" type="text" id="artQty">
+        </div>
         <div id="inventoryInfo"></div>
       </div>
       <div id="rightMenuDiv">
@@ -469,7 +472,9 @@
       </div>
       <div id="tableContainer"></div>
     </div>
-    <div id="itemimg" style="display:none"></div>
+    <div id="itemimg" style="display:none">
+      <a class="close" title="Закрыть" href="#">Закрыть</a>
+    </div>
     <div class="popup reg_form">
       <a id="close" class="close" title="Закрыть" href="#">Закрыть</a>
       <form id="loginForm" method="post">
@@ -729,7 +734,13 @@
               return;
             }
             var artcode, qty;
-            if (parseInt(x) < 1000 && x.length < 4) {
+            var sign = 1;
+            if (x.substring(0,1)=="-") {
+              sign = -1;
+              x = x.substring(1, x.length);
+            }
+            if (x.substring(0,1)=="+") x = x.substring(1, x.length);
+            if (parseInt(x) < 1000 && x.length < 5) {
               var elem = document.getElementsByClassName("highlighted")[0];
               if (elem) {
                 qty = parseInt(x);
@@ -768,20 +779,24 @@
               var row;
               if (p) {
                 row = p.parentNode.parentNode.parentNode;
-                if (qty == 0)
-                  console.log("must be deleted");
+                //if (qty == 0) console.log("must be deleted");
                 row.childNodes[1].childNodes[2].childNodes[0].innerHTML = qty;
                 row.childNodes[1].childNodes[3].childNodes[0].innerHTML = qty - instock;
-                if (document.getElementsByClassName("highlighted")[0])
+                if (document.getElementsByClassName("highlighted")[0]) {
                   document.getElementsByClassName("highlighted")[0].removeAttribute("class");
+                  document.getElementById("artQty").setAttribute("disabled","");
+                }
                 row.childNodes[1].childNodes[2].setAttribute("class", "highlighted");
+                document.getElementById("artQty").removeAttribute("disabled");
               } else {
                 var container = document.getElementById("tableContainer");
                 row = document.createElement("div");
                 if (((container.childNodes.length + 1) % 2) == 0)
                   row.setAttribute("class", "odd");
-                if (document.getElementsByClassName("highlighted")[0])
+                if (document.getElementsByClassName("highlighted")[0]) {
                   document.getElementsByClassName("highlighted")[0].removeAttribute("class");
+                  document.getElementById("artQty").setAttribute("disabled","");
+                }
                 row.innerHTML = "<div class=\"itemCointainer\"><div class=\"code\"><p>" +
                         artcode + "</p></div><div class=\"name\"><p>" +
                         name + "</p></div></div><div class=\"qtyContainer\"><div class=\"heightholder\"><p>.</p><p>.</p><p>.</p></div><div><p>" +
@@ -789,45 +804,56 @@
                         qty + "</p></div><div class=\"difference\"><p>" +
                         (qty - instock) + "</p></div></div>";
                 container.appendChild(row);
+                document.getElementById("artQty").removeAttribute("disabled");
               }
-              var img = new Image();
-              var request2 = getXmlHttp();
-              request2.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
-              request2.send();
-              if (request2.status == 200 && request2.responseText != "") {
-                if (request2.responseText!="noimg") {
-                //if (false) {
-                  img.src = "../" + $("#company option:selected").attr("sn") + "/" + request2.responseText;
-                  img.onload = function () {
+              if (showImagesFlag) {
+                var img = new Image();
+                var request2 = getXmlHttp();
+                request2.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
+                request2.send();
+                if (request2.status == 200 && request2.responseText != "") {
+                  if (request2.responseText!="noimg") {
+                    img.src = "../" + $("#company option:selected").attr("sn") + "/" + request2.responseText;
+                    img.onload = function () {
+                      var imgcontainer = document.getElementById("itemimg");
+                      imgcontainer.removeAttribute("style");
+                      imgcontainer.style.display = "block";
+                      if (imgcontainer.getElementsByTagName("img")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("img")[0]);
+                      if (imgcontainer.getElementsByTagName("p")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("p")[0]);
+                      var image = document.createElement("img");
+                      image.setAttribute("src", img.src);
+                      imgcontainer.appendChild(image);
+                      //document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
+                      var coordinates = getOffset(row);
+                      window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
+                    };
+                    img.onerror = function () {
+                      var imgcontainer = document.getElementById("itemimg");
+                      imgcontainer.removeAttribute("style");
+                      if (imgcontainer.getElementsByTagName("img")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("img")[0]);
+                      if (imgcontainer.getElementsByTagName("p")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("p")[0]);
+                      imgcontainer.style.display = "none";
+                      //document.getElementById("tableContainer").style.marginBottom = "0";
+                      var coordinates = getOffset(row);
+                      window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
+                    }
+                  } else {
                     var imgcontainer = document.getElementById("itemimg");
                     imgcontainer.removeAttribute("style");
-                    imgcontainer.style.display = "block";
-                    imgcontainer.innerHTML = "";
-                    item = document.createElement("img");
-                    item.setAttribute("src", img.src);
-                    imgcontainer.appendChild(item);
-                    //document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
-                    var coordinates = getOffset(row);
-                    window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
-                  };
-                  img.onerror = function () {
-                    var imgcontainer = document.getElementById("itemimg");
-                    imgcontainer.removeAttribute("style");
-                    imgcontainer.innerHTML = "";
-                    imgcontainer.style.display = "none";
+                    if (imgcontainer.getElementsByTagName("img")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("img")[0]);
+                    if (imgcontainer.getElementsByTagName("p")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("p")[0]);
+                    var p = document.createElement("p");
+                    p.innerHTML = "No image";
+                    imgcontainer.appendChild(p);
+                    imgcontainer.style.display = "table";
                     //document.getElementById("tableContainer").style.marginBottom = "0";
                     var coordinates = getOffset(row);
                     window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
                   }
-                } else {
-                  var imgcontainer = document.getElementById("itemimg");
-                  imgcontainer.removeAttribute("style");
-                  imgcontainer.innerHTML = "<p style=\"font-size: 90px;display: table-cell;vertical-align: middle;\">No image</p>";
-                  imgcontainer.style.display = "table";
-                  //document.getElementById("tableContainer").style.marginBottom = "0";
-                  var coordinates = getOffset(row);
-                  window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
                 }
+              } else {
+                var coordinates = getOffset(row);
+                window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
               }
             } else {
               blinkError("ОШИБКА!!!<br/>Неправильный код товара!", 600);
@@ -963,6 +989,7 @@
         refreshStyle("commonStyle", "css/style.css");
       }
       //document.addEventListener("DOMContentLoaded", refreshStyle_my());
+      var showImagesFlag = true;
       document.getElementById("artCode").onkeypress = artcodeEnter;
       document.getElementById("inventory").onkeypress = inventoryEnter;
       document.getElementById("inventory_p_p").onclick = inventoryChange;
@@ -987,9 +1014,10 @@
       }
       $('#itemimg').click(function () {
         $(this).fadeOut(300);
+        showImagesFlag = false;
         return false;
       });
-      /*var modal = document.getElementById('myModal');
+      var modal = document.getElementById('myModal');
       var img = document.getElementById('myImg');
       var modalImg = document.getElementById("img01");
       modal.onclick = function () {
@@ -1011,7 +1039,7 @@
           }
       });
 
-
+/*
       var onlongtouch;
       var timer, lockTimer;
 
