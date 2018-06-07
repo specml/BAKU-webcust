@@ -795,8 +795,8 @@
               request2.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
               request2.send();
               if (request2.status == 200 && request2.responseText != "") {
-                //if (request2.responseText!="noimg") {
-                if (false) {
+                if (request2.responseText!="noimg") {
+                //if (false) {
                   img.src = "../" + $("#company option:selected").attr("sn") + "/" + request2.responseText;
                   img.onload = function () {
                     var imgcontainer = document.getElementById("itemimg");
@@ -980,7 +980,7 @@
       } else {
         showLogin(true);
       }
-      var modal = document.getElementById('myModal');
+      /*var modal = document.getElementById('myModal');
       var img = document.getElementById('myImg');
       var modalImg = document.getElementById("img01");
       modal.onclick = function () {
@@ -1003,7 +1003,7 @@
       });
 
 
-      /*var onlongtouch;
+      var onlongtouch;
       var timer, lockTimer;
 
       function touchstart(e) {
