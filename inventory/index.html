@@ -309,11 +309,6 @@
       display: block;
       margin: 0 auto;
     }
-    #itemimg p {
-      font-size: 90px;
-      display: table-cell;
-      vertical-align: middle;
-    }
     #tableContainer {
       width: calc(100% - 6px);
       margin: 0 3px 800px;
@@ -400,7 +395,6 @@
       display: none;
       position: fixed;
       z-index: 10;
-      padding-top: 100px;
       left: 0;
       top: 0;
       width: 100%;
@@ -409,18 +403,26 @@
       background-color: rgb(0,0,0);
       background-color: rgba(0,0,0,0.9);
     }
-
     .modal-content {
       margin: auto;
       display: block;
       width: 80%;
       max-width: 700px;
+      padding-top: 100px;
     }
     .modal a.close {
       filter: invert(100%);
       opacity: 0.6;
     }
-
+    #itemimg p, .modal p {
+      font-size: 90px;
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .modal p {
+      color: white;
+      opacity: 0.7;
+    }
     @-webkit-keyframes zoom {
       from {-webkit-transform:scale(0)}
       to {-webkit-transform:scale(1)}
@@ -474,6 +476,8 @@
     </div>
     <div id="itemimg" style="display:none">
       <a class="close" title="Закрыть" href="#">Закрыть</a>
+      <img></img>
+      <p style="display:none">No image</p>
     </div>
     <div class="popup reg_form">
       <a id="close" class="close" title="Закрыть" href="#">Закрыть</a>
@@ -503,6 +507,7 @@
     <div id="myModal" class="modal">
       <a class="close" title="Закрыть" href="#">Закрыть</a>
       <img class="modal-content" id="img01">
+      <p style="display:none">No image</p>
     </div>
     <script type="text/javascript" >
       function a_closeClick() {
@@ -793,6 +798,8 @@
                 row = document.createElement("div");
                 if (((container.childNodes.length + 1) % 2) == 0)
                   row.setAttribute("class", "odd");
+                else
+                  row.setAttribute("class", "even");
                 if (document.getElementsByClassName("highlighted")[0]) {
                   document.getElementsByClassName("highlighted")[0].removeAttribute("class");
                   document.getElementById("artQty").setAttribute("disabled","");
@@ -818,11 +825,9 @@
                       var imgcontainer = document.getElementById("itemimg");
                       imgcontainer.removeAttribute("style");
                       imgcontainer.style.display = "block";
-                      if (imgcontainer.getElementsByTagName("img")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("img")[0]);
-                      if (imgcontainer.getElementsByTagName("p")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("p")[0]);
-                      var image = document.createElement("img");
-                      image.setAttribute("src", img.src);
-                      imgcontainer.appendChild(image);
+                      imgcontainer.getElementsByTagName("p")[0].style.display = "none";
+                      imgcontainer.getElementsByTagName("img")[0].removeAttribute("style");
+                      imgcontainer.getElementsByTagName("img")[0].setAttribute("src", img.src);
                       //document.getElementById("tableContainer").style.marginBottom = imgcontainer.offsetHeight + "px";
                       var coordinates = getOffset(row);
                       window.scrollTo(coordinates.left, coordinates.top - document.getElementsByClassName("menu")[0].offsetHeight - 5);
@@ -830,8 +835,8 @@
                     img.onerror = function () {
                       var imgcontainer = document.getElementById("itemimg");
                       imgcontainer.removeAttribute("style");
-                      if (imgcontainer.getElementsByTagName("img")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("img")[0]);
-                      if (imgcontainer.getElementsByTagName("p")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("p")[0]);
+                      imgcontainer.getElementsByTagName("img")[0].style.display = "none";
+                      imgcontainer.getElementsByTagName("p")[0].style.display = "none";
                       imgcontainer.style.display = "none";
                       //document.getElementById("tableContainer").style.marginBottom = "0";
                       var coordinates = getOffset(row);
@@ -840,11 +845,9 @@
                   } else {
                     var imgcontainer = document.getElementById("itemimg");
                     imgcontainer.removeAttribute("style");
-                    if (imgcontainer.getElementsByTagName("img")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("img")[0]);
-                    if (imgcontainer.getElementsByTagName("p")[0]) imgcontainer.removeChild(imgcontainer.getElementsByTagName("p")[0]);
-                    var p = document.createElement("p");
-                    p.innerHTML = "No image";
-                    imgcontainer.appendChild(p);
+                    imgcontainer.getElementsByTagName("img")[0].style.display = "none";
+                    imgcontainer.getElementsByTagName("img")[0].removeAttribute("src");
+                    imgcontainer.getElementsByTagName("p")[0].removeAttribute("style");
                     imgcontainer.style.display = "table";
                     //document.getElementById("tableContainer").style.marginBottom = "0";
                     var coordinates = getOffset(row);
@@ -964,6 +967,8 @@
                     var row = document.createElement("div");
                     if (((i + 1) % 2) == 0)
                       row.setAttribute("class", "odd");
+                    else
+                      row.setAttribute("class", "even");
                     row.innerHTML = "<div class=\"itemCointainer\"><div class=\"code\"><p>" +
                             a[0] + "</p></div><div class=\"name\"><p>" +
                             a[1] + "</p></div></div><div class=\"qtyContainer\"><div class=\"heightholder\"><p>.</p><p>.</p><p>.</p></div><div><p>" +
@@ -1025,21 +1030,26 @@
         return false;
       }
       $(".itemCointainer").click(function () {
-        var artcode = this.childNodes[0].childNodes[0].innerHTML;
-        if (artcode == "Код товара")
-          return;
-        //modal.style.display = "block";
+        var artcode = this.getElementsByClassName("code")[0].getElementsByTagName("p")[0].innerHTML;
+        if (!artcode) return;
+        if (artcode == "Код товара") return;
         var request = getXmlHttp();
         request.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
         request.send();
         if (request.status == 200 && request.responseText != "")
           if (request.responseText != "noimg") {
             modalImg.src = "../" + $("#company option:selected").attr("sn") + "/" + request.responseText;
+            modal.getElementsByTagName("p")[0].style.display = "none";
             modalImg.onload = $(modal).fadeIn(300);
+          } else {
+            $(modal).fadeIn(300);
+            modalImg.removeAttribute("src");
+            modal.getElementsByTagName("p")[0].removeAttribute("style");
+            modal.style.display = "table";
           }
       });
 
-/*
+
       var onlongtouch;
       var timer, lockTimer;
 
@@ -1047,27 +1057,68 @@
         if (lockTimer) {
           return;
         }
-        timer = setTimeout(onlongtouch, 800);
+        timer = setTimeout(onlongtouch,500,e);
         lockTimer = true;
-      }
 
+      }
       function touchend() {
-        //e.preventDefault();
-      	//stops short touches from firing the event
-        if (timer) {
+      	if (timer) {
           clearTimeout(timer);
           lockTimer = false;
         }
       }
 
-      onlongtouch = function () {
-        console.log('longtouch');
+      onlongtouch = function (e) {
+        var container;
+        if (e.target.id!="") return;
+        else if (e.target.className=="") {
+          container = e.target.parentNode.parentNode;
+          if (container.className!="itemCointainer")
+            container = container.parentNode.getElementsByClassName("itemCointainer")[0];
+        }
+        else if (e.target.className=="tableHeader") return;
+        else if (e.target.className=="itemCointainer") container = e.target;
+        else if (e.target.className=="qtyContainer") container = e.target.parentNode.getElementsByClassName("itemCointainer")[0];
+        else if (e.target.className=="odd") container = e.target.getElementsByClassName("itemCointainer")[0];
+        else if (e.target.className=="even") container = e.target.getElementsByClassName("itemCointainer")[0];
+        var artcode = container.getElementsByClassName("code")[0].getElementsByTagName("p")[0].innerHTML;
+        if (artcode=="Код товара") return;
+        var artcode1 = container.parentNode.previousSibling;
+        if (artcode1)
+        artcode1 = artcode1.getElementsByClassName("itemCointainer")[0].getElementsByClassName("code")[0].getElementsByTagName("p")[0].innerHTML;
+        var artcode2 = container.parentNode.nextSibling;
+        if (artcode2)
+        artcode2 = artcode2.getElementsByClassName("itemCointainer")[0].getElementsByClassName("code")[0].getElementsByTagName("p")[0].innerHTML;
+        var request = getXmlHttp();
+        alert("delete?");
+        console.log(container.parentNode);
+        request.open("GET", "../WebChangeStockTakeVc.hal?p1=" + getParameterByName("st") + "&p3=" + artcode1 + "," + artcode + "," + artcode2 + "&comp=" + getParameterByName("comp"), false);
+        request.send(null);
+        if (request.status == 200 && request.responseText != "") {
+          switch (request.responseText) {
+            case "oked":
+              document.getElementById("page").style.display = "none";
+              document.getElementById("nostvcnr").style.display = "block";
+              blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!", 700);
+              beepError();
+              break;
+            case "nostvcnr":
+              document.getElementById("page").style.display = "none";
+              document.getElementById("nostvcnr").style.display = "block";
+              break;
+            case "deleted":
+              container.parentNode.parentNode.removeChild(container.parentNode);
+              break;
+            default:
+          }
+        }
+        return;
       };
 
       document.addEventListener("DOMContentLoaded", function (event) {
-        window.addEventListener("touchstart", touchstart, false);
+        window.addEventListener("touchstart", touchstart,false);
         window.addEventListener("touchend", touchend, false);
-      });*/
+      });
     </script>
   </body>
 
