@@ -711,6 +711,25 @@
             mySelect.value = getParameterByName("comp");
         }
       }
+      function itemCointainerClick() {
+        var artcode = this.getElementsByClassName("code")[0].getElementsByTagName("p")[0].innerHTML;
+        if (!artcode) return;
+        if (artcode == "Код товара") return;
+        var request = getXmlHttp();
+        request.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
+        request.send();
+        if (request.status == 200 && request.responseText != "")
+        if (request.responseText != "noimg") {
+          modalImg.src = "../" + $("#company option:selected").attr("sn") + "/" + request.responseText;
+          modal.getElementsByTagName("p")[0].style.display = "none";
+          modalImg.onload = $(modal).fadeIn(300);
+        } else {
+          $(modal).fadeIn(300);
+          modalImg.removeAttribute("src");
+          modal.getElementsByTagName("p")[0].removeAttribute("style");
+          modal.style.display = "table";
+        }
+      }
       function artcodeEnter(e) {
         if (!e)
           e = window.event;
@@ -810,6 +829,7 @@
                         instock + "</p></div><div class=\"highlighted\"><p>" +
                         qty + "</p></div><div class=\"difference\"><p>" +
                         (qty - instock) + "</p></div></div>";
+                row.onclick = itemCointainerClick;
                 container.appendChild(row);
                 document.getElementById("artQty").removeAttribute("disabled");
               }
@@ -975,6 +995,7 @@
                             ((parseInt(a[2])) ? (parseInt(a[2])) : 0) + "</p></div><div><p>" +
                             ((parseInt(a[3])) ? (parseInt(a[3])) : 0) + "</p></div><div class=\"difference\"><p>" +
                             (a[3] - a[2]) + "</p></div></div>";
+                            row.onclick = itemCointainerClick;
                     container.appendChild(row);
                   } else {
                     document.getElementById("inventoryInfo").innerHTML = "<p>Склад: " + a[0] + "</p>";
@@ -988,7 +1009,6 @@
           document.getElementById("nostvcnr").style.display = "block";
         }
       }
-
       function refreshStyle_my() {
         styleByDevice("css/Inventory.css", "css/mInventory.css");
         refreshStyle("commonStyle", "css/style.css");
@@ -1029,27 +1049,6 @@
         $(this).fadeOut(300);
         return false;
       }
-      $(".itemCointainer").click(function () {
-        var artcode = this.getElementsByClassName("code")[0].getElementsByTagName("p")[0].innerHTML;
-        console.log("item click - " + artcode);
-
-        if (!artcode) return;
-        if (artcode == "Код товара") return;
-        var request = getXmlHttp();
-        request.open("GET", "../WebFindItemImg.hal?artcode=" + artcode + "&comp=" + getParameterByName("comp"), false);
-        request.send();
-        if (request.status == 200 && request.responseText != "")
-          if (request.responseText != "noimg") {
-            modalImg.src = "../" + $("#company option:selected").attr("sn") + "/" + request.responseText;
-            modal.getElementsByTagName("p")[0].style.display = "none";
-            modalImg.onload = $(modal).fadeIn(300);
-          } else {
-            $(modal).fadeIn(300);
-            modalImg.removeAttribute("src");
-            modal.getElementsByTagName("p")[0].removeAttribute("style");
-            modal.style.display = "table";
-          }
-      });
 
 
       var onlongtouch;
