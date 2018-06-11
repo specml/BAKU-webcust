@@ -1090,26 +1090,26 @@
         if (artcode2)
         artcode2 = artcode2.getElementsByClassName("itemCointainer")[0].getElementsByClassName("code")[0].getElementsByTagName("p")[0].innerHTML;
         var request = getXmlHttp();
-        alert("delete?");
-        console.log(container.parentNode);
-        request.open("GET", "../WebChangeStockTakeVc.hal?p1=" + getParameterByName("st") + "&p3=" + artcode1 + "," + artcode + "," + artcode2 + "&comp=" + getParameterByName("comp"), false);
-        request.send(null);
-        if (request.status == 200 && request.responseText != "") {
-          switch (request.responseText) {
-            case "oked":
-              document.getElementById("page").style.display = "none";
-              document.getElementById("nostvcnr").style.display = "block";
-              blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!", 700);
-              beepError();
-              break;
-            case "nostvcnr":
-              document.getElementById("page").style.display = "none";
-              document.getElementById("nostvcnr").style.display = "block";
-              break;
-            case "deleted":
-              container.parentNode.parentNode.removeChild(container.parentNode);
-              break;
-            default:
+        if (confirm('Удалить эту строку?')) {
+          request.open("GET", "../WebChangeStockTakeVc.hal?p1=" + getParameterByName("st") + "&p3=" + artcode1 + "," + artcode + "," + artcode2 + "&comp=" + getParameterByName("comp"), false);
+          request.send(null);
+          if (request.status == 200 && request.responseText != "") {
+            switch (request.responseText) {
+              case "oked":
+                document.getElementById("page").style.display = "none";
+                document.getElementById("nostvcnr").style.display = "block";
+                blinkError("ОШИБКА!!!<br/>Инвентаризация закрыта!", 700);
+                beepError();
+                break;
+              case "nostvcnr":
+                document.getElementById("page").style.display = "none";
+                document.getElementById("nostvcnr").style.display = "block";
+                break;
+              case "deleted":
+                container.parentNode.parentNode.removeChild(container.parentNode);
+                break;
+              default:
+            }
           }
         }
         return;
