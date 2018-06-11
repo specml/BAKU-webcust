@@ -1031,6 +1031,8 @@
       }
       $(".itemCointainer").click(function () {
         var artcode = this.getElementsByClassName("code")[0].getElementsByTagName("p")[0].innerHTML;
+        console.log("item click - " + artcode);
+
         if (!artcode) return;
         if (artcode == "Код товара") return;
         var request = getXmlHttp();
