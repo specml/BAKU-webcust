@@ -149,7 +149,8 @@
           typeRowChart = dc.rowChart("#chart-row-type");
       var iSum = 0;
       if (hansData!="") {
-        param = hansData;
+        param = hansData.split(',')[0];
+        comp = hansData.split(',')[1];
       }
 
       d3.csv("../WebSales.hal?param=" + param + "&sd=" + sd + "&ed=" + ed + "&loc=" + loc + "&cat=" + category + "&comp=" + comp, function(error, data) {
